@@ -33,3 +33,6 @@ Plug 'godlygeek/tabular'
 " wrapper for gdb and lldb
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
+" swift syntax highlighting
+Plug 'keith/swift.vim'
+
