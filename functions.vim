@@ -41,7 +41,6 @@ endfunction
 command! -buffer PBPaste call s:PBPaste()
 
 
-
 " custom auto creation of html tag attributes
 function HtmlAttribCallback( xml_tag )
     return 0

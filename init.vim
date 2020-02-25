@@ -1,4 +1,12 @@
 
+" for vim-markdown-composeer
+"function! BuildComposer(info)
+"  if a:info.status != 'unchanged' || a:info.force
+"      !cargo build --release
+"  endif
+"endfunction
+
+
 call plug#begin('~/.local/share/nvim/site/plugs')
 source ~/.config/nvim/plugs.vim
 call plug#end()
@@ -30,9 +38,6 @@ set shell=sh "you may have to switch this back to bash
 
 " make grammarous use vim's interal spell checker
 let g:grammarous#use_vim_spelllang = 1
-
-" make gnupg use symetric encryption on new files
-let g:GPGPreferSymmetric = 1
 
 " xml/html tag auto close
 let g:xmledit_enable_html = 1
@@ -73,8 +78,4 @@ hi Comment cterm=italic gui=italic
 source ~/.config/nvim/autocommands.vim
 
 source ~/.config/nvim/functions.vim
-
-"source ~/.config/nvim/encryption.vim
-
-"source ~/.config/nvim/otherencryption.vim
 

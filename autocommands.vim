@@ -9,7 +9,8 @@ au FileType text setlocal wrap
 au FileType text setlocal sidescroll=8
 au FileType text setlocal spell
 au FileType text setlocal formatoptions-=1
-au FileType text setlocal formatlistpat=^(\\d\\+[.)]\\t\\\|\\s*[-*+]\\s\\+)
+au FileType text setlocal formatoptions+=p
+"au FileType text setlocal formatlistpat=^(\\d\\+[.)]\\t\\\|\\s*[-*+]\\s\\+)
 au FileType text colorscheme text
 
 au FileType markdown setlocal nofoldenable
@@ -34,6 +35,8 @@ au FileType json setlocal shiftwidth=2
 au FileType json setlocal softtabstop=2
 au FileType json setlocal conceallevel=0
 
+au FileType gitcommit setlocal spell
+
 au FileType lua setlocal tabstop=2
 au FileType lua setlocal shiftwidth=2
 au FileType lua setlocal softtabstop=2
@@ -49,7 +52,6 @@ au FileType python setlocal tabstop=4
 au FileType python setlocal softtabstop=4
 au FileType python setlocal expandtab
 au FileType python setlocal formatoptions+=r
-"au FileType python setlocal number
 au FileType python setlocal showmatch
 au FileType python setlocal nofoldenable
 au FileType python colorscheme python

@@ -3,6 +3,9 @@
 "------------------------------------------------------------------------------"
 
 
+" realtime markdown previewer
+"Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+
 " fish script syntax highlighting
 Plug 'dag/vim-fish'
 
@@ -26,9 +29,6 @@ Plug 'sukima/xmledit'
 
 " .md table formating
 Plug 'godlygeek/tabular'
-
-" .gpg file editing
-"Plug 'jamessan/vim-gnupg'
 
 " wrapper for gdb and lldb
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
