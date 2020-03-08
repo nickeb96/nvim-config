@@ -9,6 +9,9 @@
 " fish script syntax highlighting
 Plug 'dag/vim-fish'
 
+" rust syntax highlighting
+Plug 'rust-lang/rust.vim'
+
 " text file and markdown editing
 Plug 'reedes/vim-pencil'
 
