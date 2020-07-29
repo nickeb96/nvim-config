@@ -1,10 +1,10 @@
 
-" for vim-markdown-composeer
-"function! BuildComposer(info)
-"  if a:info.status != 'unchanged' || a:info.force
-"      !cargo build --release
-"  endif
-"endfunction
+""" setup for markdown composer plugin
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    !cargo build --release --locked
+  endif
+endfunction
 
 
 call plug#begin('~/.local/share/nvim/site/plugs')
@@ -22,7 +22,7 @@ au VimLeave * set guicursor=a:hor20
 au VimEnter * :let @/=""
 
 " remember cursor position from last session
-au BufReadPost *.rs,*.c,*.h,*.cpp,*.hpp,*.py
+au BufReadPost *.rs,*.c,*.h,*.cpp,*.hpp,*.py,*.clj
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal! g'\"" |
     \ endif
@@ -32,6 +32,8 @@ set scrolloff=7
 
 " preserve file creaton time
 set backupcopy=yes
+
+let g:markdown_composer_open_browser = 0
 
 " use sh as the internal shell because many utilities are designed around it
 set shell=sh "you may have to switch this back to bash
@@ -68,8 +70,8 @@ set expandtab
 setlocal termguicolors
 
 " set default colorscheme
-"colorscheme molokai
-colorscheme OceanicNext
+colorscheme molokai
+"colorscheme OceanicNext
 
 " make comments italic
 hi Comment cterm=italic gui=italic

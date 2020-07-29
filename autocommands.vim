@@ -35,7 +35,12 @@ au FileType json setlocal shiftwidth=2
 au FileType json setlocal softtabstop=2
 au FileType json setlocal conceallevel=0
 
-au FileType gitcommit setlocal spell
+au FileType toml setlocal tabstop=2
+au FileType toml setlocal shiftwidth=2
+au FileType toml setlocal softtabstop=2
+
+au FileType rust setlocal formatoptions-=o
+au FileType rust setlocal textwidth=79
 
 au FileType lua setlocal tabstop=2
 au FileType lua setlocal shiftwidth=2
@@ -56,7 +61,11 @@ au FileType python setlocal showmatch
 au FileType python setlocal nofoldenable
 au FileType python colorscheme python
 
+au FileType pdf setlocal rulerformat=BYTE:\ %o
+
 au FileType calendar setlocal noexpandtab
+
+au FileType gitcommit setlocal spell
 
 au FileType fish colorscheme fish
 
