@@ -27,6 +27,9 @@ au BufReadPost *.rs,*.c,*.h,*.cpp,*.hpp,*.py,*.clj
     \   exe "normal! g'\"" |
     \ endif
 
+" colorscheme
+let preferred_color_scheme = "molokai"
+
 " make screen scroll 7 lines before end
 set scrolloff=7
 
@@ -69,15 +72,18 @@ set expandtab
 " allows 24-bit colors in terminal
 setlocal termguicolors
 
-" set default colorscheme
-colorscheme molokai
-"colorscheme OceanicNext
+" set colorscheme or use included fallback
+try
+    execute "colorscheme " . preferred_color_scheme
+catch
+    colorscheme badwolf
+endtry
 
 " make comments italic
 hi Comment cterm=italic gui=italic
 
 
-source ~/.config/nvim/autocommands.vim
+source ~/.config/nvim/filecommands.vim
 
 source ~/.config/nvim/functions.vim
 
