@@ -4,7 +4,7 @@
 
 
 " realtime markdown previewer
-"Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " fish script syntax highlighting
 Plug 'dag/vim-fish'

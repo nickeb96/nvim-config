@@ -1,12 +1,4 @@
 
-""" setup for markdown composer plugin
-function! BuildComposer(info)
-  if a:info.status != 'unchanged' || a:info.force
-    !cargo build --release --locked
-  endif
-endfunction
-
-
 call plug#begin('~/.local/share/nvim/site/plugs')
 source ~/.config/nvim/plugs.vim
 call plug#end()
@@ -35,8 +27,6 @@ set scrolloff=7
 
 " preserve file creaton time
 set backupcopy=yes
-
-let g:markdown_composer_open_browser = 0
 
 " use sh as the internal shell because many utilities are designed around it
 set shell=sh "you may have to switch this back to bash
