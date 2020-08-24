@@ -10,6 +10,10 @@ au FileType text setlocal sidescroll=8
 au FileType text setlocal spell
 au FileType text setlocal formatoptions-=1
 au FileType text setlocal formatoptions+=p
+au FileType text setlocal colorcolumn=+1,+2,+3,+4,+5,+6,+7,+8,+9,+10
+au FileType text setlocal number
+au FileType text setlocal numberwidth=10
+"au FileType text setlocal notermguicolors
 "au FileType text setlocal formatlistpat=^(\\d\\+[.)]\\t\\\|\\s*[-*+]\\s\\+)
 au FileType text colorscheme text
 
@@ -59,6 +63,7 @@ au FileType python setlocal expandtab
 au FileType python setlocal formatoptions+=r
 au FileType python setlocal showmatch
 au FileType python setlocal nofoldenable
+au FileType python setlocal number
 au FileType python colorscheme python
 
 au FileType pdf setlocal rulerformat=BYTE:\ %o
