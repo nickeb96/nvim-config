@@ -1,5 +1,4 @@
 
-au FileType text call pencil#init({'wrap': 'hard', 'joinspaces': 1, 'cursorwrap': 0, 'autoformat': 1})
 au FileType text setlocal shiftwidth=8
 au FileType text setlocal tabstop=8
 au FileType text setlocal softtabstop=8
@@ -8,13 +7,11 @@ au FileType text setlocal textwidth=80
 au FileType text setlocal wrap
 au FileType text setlocal sidescroll=8
 au FileType text setlocal spell
-au FileType text setlocal formatoptions-=1
-au FileType text setlocal formatoptions+=p
+au FileType text setlocal formatoptions=tqnp
 au FileType text setlocal colorcolumn=+1,+2,+3,+4,+5,+6,+7,+8,+9,+10
 au FileType text setlocal number
 au FileType text setlocal numberwidth=10
-"au FileType text setlocal notermguicolors
-"au FileType text setlocal formatlistpat=^(\\d\\+[.)]\\t\\\|\\s*[-*+]\\s\\+)
+au FileType text setlocal formatlistpat=^(\\d\\+[.)]\\t\\\|\\s*[-*+]\\s\\+)
 au FileType text colorscheme text
 
 au FileType markdown setlocal nofoldenable

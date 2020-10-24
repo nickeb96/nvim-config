@@ -19,7 +19,10 @@ Plug 'reedes/vim-pencil'
 Plug 'cespare/vim-toml'
 
 " color schemes
-Plug 'rafi/awesome-vim-colorschemes'
+"Plug 'rafi/awesome-vim-colorschemes'
+
+" molokai color scheme
+Plug 'piersy/molokai'
 
 " opengl shader syntax highlighting
 Plug 'tikhomirov/vim-glsl'

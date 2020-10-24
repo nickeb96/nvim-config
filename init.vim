@@ -28,8 +28,15 @@ set scrolloff=7
 " preserve file creaton time
 set backupcopy=yes
 
-" use sh as the internal shell because many utilities are designed around it
-set shell=sh "you may have to switch this back to bash
+" use sh as the internal shell
+set shell=sh "you may have to switch this back to bash if things break
+
+" ignore case on tab completion of commands and functions
+"set ignorecase "dont use this because it messes up regex searching
+"set wildignorecase
+
+" use US English dictionary instead of all English subsets
+set spelllang=en_us,personal
 
 " make grammarous use vim's interal spell checker
 let g:grammarous#use_vim_spelllang = 1
@@ -38,6 +45,11 @@ let g:grammarous#use_vim_spelllang = 1
 let g:xmledit_enable_html = 1
 let g:xml_use_xhtml = 1
 
+" turn off auto scrolling in markdown preview
+let g:mkdp_preview_options = {
+    \ 'disable_sync_scroll': 1
+    \ }
+
 " fix proper syntax highlighting in shell scripts
 let g:is_posix = 1
 
@@ -45,7 +57,7 @@ let g:is_posix = 1
 let g:c_syntax_for_h = 1
 
 " inform vim that you are using two spaces as sentence separators
-set cpo+=J
+set cpoptions+=J
 
 " disable line wrapping all together
 set nowrap
