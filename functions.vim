@@ -46,3 +46,8 @@ function HtmlAttribCallback( xml_tag )
     return 0
 endfunction
 
+function MySpecialFunction()
+    "vsplit
+    "wincmd w
+    "vertical resize 18
+endfunction

@@ -41,6 +41,9 @@ set spelllang=en_us,personal
 " make grammarous use vim's interal spell checker
 let g:grammarous#use_vim_spelllang = 1
 
+" make statusline show useful information
+set statusline=%<%f\ %h%m%r%=%y\ \ \ %-14.(%l:%c%V%)\ %P
+
 " xml/html tag auto close
 let g:xmledit_enable_html = 1
 let g:xml_use_xhtml = 1

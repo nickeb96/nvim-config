@@ -7,11 +7,15 @@ au FileType text setlocal textwidth=80
 au FileType text setlocal wrap
 au FileType text setlocal sidescroll=8
 au FileType text setlocal spell
-au FileType text setlocal formatoptions=tqnp
+au FileType text setlocal formatoptions=atqnp
 au FileType text setlocal colorcolumn=+1,+2,+3,+4,+5,+6,+7,+8,+9,+10
 au FileType text setlocal number
 au FileType text setlocal numberwidth=10
-au FileType text setlocal formatlistpat=^(\\d\\+[.)]\\t\\\|\\s*[-*+]\\s\\+)
+" ( (one or more digits) then (a tab) ) or ( (one or more whitespace) then (a
+" dash, asterisk, or plus) then (one or more whitespace) )
+"au FileType text setlocal formatlistpat=^\\(\\d\\+[.)][\\t]\\)\\\|\\(\\s*[-*+]\\s\\+\\)
+"au FileType text setlocal formatlistpat=^\\s*\\d\\+\.[\\t\ ]\\s*
+au FileType text setlocal formatlistpat=^\\s*\\([0-9]\\+\\\|[a-z]\\)[\\].:)}]\\s\\+
 au FileType text colorscheme text
 
 au FileType markdown setlocal nofoldenable
@@ -19,7 +23,8 @@ au FileType markdown setlocal conceallevel=2
 au FileType markdown setlocal textwidth=79 "auto wrap
 au FileType markdown setlocal wrap
 au FileType markdown setlocal spell
-au FileType markdown call pencil#init({'wrap': 'soft', 'joinspaces': 1, 'cursorwrap': 0, 'autoformat': 1})
+au FileType markdown call pencil#init({'wrap': 'soft', 'joinspaces': 1, 'cursorwrap': 0, 'autoformat': 1, 'textwidth': 79})
+au FileType markdown call MySpecialFunction()
 "au FileType markdown colorscheme markdown
 
 au FileType html,htmldjango setlocal tabstop=2
@@ -42,6 +47,10 @@ au FileType toml setlocal softtabstop=2
 
 au FileType rust setlocal formatoptions-=o
 au FileType rust setlocal textwidth=79
+au FileType rust setlocal tabstop=4
+au FileType rust setlocal shiftwidth=4
+au FileType rust setlocal softtabstop=4
+
 
 au FileType lua setlocal tabstop=2
 au FileType lua setlocal shiftwidth=2
@@ -57,7 +66,8 @@ au FileType python setlocal shiftwidth=4
 au FileType python setlocal tabstop=4
 au FileType python setlocal softtabstop=4
 au FileType python setlocal expandtab
-au FileType python setlocal formatoptions+=r
+"au FileType python setlocal formatoptions+=r
+au FileType python setlocal formatoptions=acrqnp
 au FileType python setlocal showmatch
 au FileType python setlocal nofoldenable
 au FileType python setlocal number
