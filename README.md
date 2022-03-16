@@ -15,4 +15,6 @@ To Do Next
 - Make comment auto formatting work for all source code languages
 - Finish making markdown margins
 - Fix cursor highlighting when under a parenthesis/bracket/brace in Molokai
+- Fix pdf's rulerformat being override by custom statusline
+- Add plug.vim.old to .gitignore
 
