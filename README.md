@@ -17,4 +17,5 @@ To Do Next
 - Fix cursor highlighting when under a parenthesis/bracket/brace in Molokai
 - Fix pdf's rulerformat being override by custom statusline
 - Add plug.vim.old to .gitignore
+- Make syntax/fish.vim more accurately match shell syntax highlighting
 
