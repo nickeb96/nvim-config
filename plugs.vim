@@ -7,7 +7,7 @@
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " fish script syntax highlighting
-Plug 'dag/vim-fish'
+"Plug 'dag/vim-fish'
 
 " rust syntax highlighting
 Plug 'rust-lang/rust.vim'

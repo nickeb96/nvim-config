@@ -1,12 +1,12 @@
 
 " list syntax groups of text under cursor
-function! <SID>SynStack()
+function! SynStack()
     if !exists("*synstack")
         return
     endif
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-nmap <C-S-H> :call <SID>SynStack()<CR>
+nmap <C-H> :call SynStack()<CR>
 
 
 " format markdown tables
