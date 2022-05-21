@@ -8,9 +8,10 @@ au FileType text setlocal wrap
 au FileType text setlocal sidescroll=8
 au FileType text setlocal spell
 au FileType text setlocal formatoptions=atqnp
-au FileType text setlocal colorcolumn=+1,+2,+3,+4,+5,+6,+7,+8,+9,+10
 au FileType text setlocal number
-au FileType text setlocal numberwidth=10
+au FileType text let &numberwidth = (winwidth('%') - &textwidth) / 2
+au FileType text let &colorcolumn = '+1,+2,+3,+4,+5,+6,+7,+8,+9,+10'
+au FileType text let &colorcolumn = join(range(&textwidth + 1, &textwidth + &numberwidth), ",")
 " ( (one or more digits) then (a tab) ) or ( (one or more whitespace) then (a
 " dash, asterisk, or plus) then (one or more whitespace) )
 "au FileType text setlocal formatlistpat=^\\(\\d\\+[.)][\\t]\\)\\\|\\(\\s*[-*+]\\s\\+\\)
@@ -27,6 +28,7 @@ au FileType markdown call pencil#init({'wrap': 'soft', 'joinspaces': 1, 'cursorw
 au FileType markdown call MySpecialFunction()
 "au FileType markdown colorscheme markdown
 
+au BufRead,BufNewFile *.tera setlocal filetype=htmldjango
 au FileType html,htmldjango setlocal tabstop=2
 au FileType html,htmldjango setlocal shiftwidth=2
 au FileType html,htmldjango setlocal softtabstop=2
@@ -78,8 +80,14 @@ au FileType pdf setlocal rulerformat=BYTE:\ %o
 au FileType calendar setlocal noexpandtab
 
 au FileType gitcommit setlocal spell
+au FileType gitconfig setlocal noexpandtab
 
 au FileType fish colorscheme fish
+au FileType fish setlocal omnifunc=FishComplete
+au FileType fish inoremap <S-TAB> <C-X><C-O>
+au FileType fish inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+au FileType fish inoremap <expr> <TAB> pumvisible() ? "\<lt>Down>" : "<TAB>"
+au FileType fish inoremap <expr> <BS> pumvisible() ? "<ESC>a" : "<BS>"
 
 au FileType sh setlocal formatoptions=crqanj
 au FileType sh setlocal formatlistpat=^\\s*\\([\\d]\\+[.)]\\\|[*-]\\)\\s*

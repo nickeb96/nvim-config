@@ -5,23 +5,22 @@ if exists("syntax_on")
 endif
 let g:colors_name = "fish"
 
+hi LineNr           guifg=#465457 guibg=#232526
+hi NonText          guifg=#465457
+hi Visual           guibg=#444444 gui=bold
+hi Pmenu            guifg=#c8c8c8 guibg=NONE
+hi PmenuSel         guifg=#c8c8c8 guibg=#444444 gui=bold
 
-hi Normal                       guifg=#c8c8c8
-hi LineNr                       cterm=bold ctermfg=lightgrey
-hi Visual                       cterm=none ctermbg=darkgrey
-hi Error                        guifg=#e78293
-hi EndOfBuffer                  guifg=#888888 gui=italic
 
-hi fishKeyword                  guifg=#c6d57e
-hi fishStatement                guifg=#c6d57e
-hi fishConditional              guifg=#c6d57e
-hi fishOption                   guifg=#ffe1af
-hi fishRedirection              guifg=#87a7b3
-hi fishCharacter                guifg=#b5d0b3 gui=bold
-hi fishSpecial                  guifg=#c8c8c8
-hi fishRepeat                   guifg=#c6d57e
-hi fishLabel                    guifg=#c6d57e
-hi fishIdentifier               guifg=#a5d3c5
-hi fishString                   guifg=#acc6aa
-hi fishComment                  guifg=#888888 gui=italic
+hi fish_color_command           guifg=#c6d57e
+hi fish_color_comment           guifg=#888888 gui=italic
+hi fish_color_end               guifg=#87a7b3
+hi fish_color_escape            guifg=#b5d0b3 gui=bold
+hi fish_color_keyword           guifg=#c6d57e
+hi fish_color_normal            guifg=#c8c8c8
+hi fish_color_operator          guifg=#a5d3c5
+hi fish_color_option            guifg=#ffe1af
+hi fish_color_param             guifg=#c8c8c8
+hi fish_color_quote             guifg=#acc6aa
+hi fish_color_redirection       guifg=#87a7b3
 
