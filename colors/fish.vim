@@ -5,11 +5,14 @@ if exists("syntax_on")
 endif
 let g:colors_name = "fish"
 
-hi LineNr           guifg=#465457 guibg=#232526
+hi LineNr           guifg=#465457 guibg=#212223
 hi NonText          guifg=#465457
-hi Visual           guibg=#444444 gui=bold
+hi Visual                         guibg=#444444 gui=bold
 hi Pmenu            guifg=#c8c8c8 guibg=NONE
 hi PmenuSel         guifg=#c8c8c8 guibg=#444444 gui=bold
+hi Search           guifg=#232526 guibg=#ead670 gui=bold
+hi IncSearch        guifg=#232526 guibg=#f6a57d gui=bold
+hi Todo             guifg=#b5a557 guibg=NONE
 
 
 hi fish_color_command           guifg=#c6d57e
