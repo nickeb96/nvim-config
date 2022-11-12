@@ -1,11 +1,4 @@
 
-au FileType markdown setlocal wrap
-au FileType markdown setlocal textwidth=79 "auto wrap
-au FileType markdown setlocal spell
-au FileType markdown setlocal tabstop=2
-au FileType markdown setlocal shiftwidth=2
-au FileType markdown setlocal softtabstop=2
-
 au BufRead,BufNewFile *.tera setlocal filetype=html
 au FileType html,css,javascript,json,htmldjango setlocal tabstop=2
 au FileType html,css,javascript,json,htmldjango setlocal shiftwidth=2
