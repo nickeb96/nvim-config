@@ -6,8 +6,8 @@ function! SynStack()
     endif
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-nmap <C-H> :call SynStack()<CR>
-
+nmap <C-S> :call SynStack()<CR>
+nmap <C-H> :TSHighlightCapturesUnderCursor<CR>
 
 " format markdown tables
 function! s:TableFormat()
@@ -46,11 +46,6 @@ function HtmlAttribCallback( xml_tag )
     return 0
 endfunction
 
-function MySpecialFunction()
-    "vsplit
-    "wincmd w
-    "vertical resize 18
-endfunction
 
 function! FishComplete(findstart, base)
     if a:findstart

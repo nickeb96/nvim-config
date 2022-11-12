@@ -7,17 +7,33 @@
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " fish script syntax highlighting
-Plug 'nickeb96/fish.vim'
-"Plug '~/Repositories/fish.vim'
+"Plug 'nickeb96/fish.vim'
+Plug '~/Repositories/fish.vim'
 
-" rust syntax highlighting
-Plug 'rust-lang/rust.vim'
+" pest grammar files
+Plug 'pest-parser/pest.vim'
+
+" wgsl shader files
+Plug 'DingDean/wgsl.vim'
+
+" language server client
+Plug 'neovim/nvim-lspconfig'
+
+" tree sitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-context'
+
+" tree sitter based auto pairs
+Plug 'windwp/nvim-autopairs'
+
+" tree sitter highlight nvim under cursor
+Plug 'nvim-treesitter/playground'
 
 " text file and markdown editing
-Plug 'reedes/vim-pencil'
+"Plug 'reedes/vim-pencil'
 
 " toml syntax highlighting
-Plug 'cespare/vim-toml'
+"Plug 'cespare/vim-toml'
 
 " color schemes
 "Plug 'rafi/awesome-vim-colorschemes'
@@ -25,11 +41,14 @@ Plug 'cespare/vim-toml'
 " molokai color scheme
 Plug 'piersy/molokai'
 
+" sonokai color scheme
+Plug 'sainnhe/sonokai'
+
 " opengl shader syntax highlighting
 Plug 'tikhomirov/vim-glsl'
 
 " grammer checker
-Plug 'rhysd/vim-grammarous'
+"Plug 'rhysd/vim-grammarous'
 
 " xml/html tag closing
 Plug 'sukima/xmledit'
