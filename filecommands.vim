@@ -1,63 +1,24 @@
 
-au FileType text setlocal shiftwidth=8
-au FileType text setlocal tabstop=8
-au FileType text setlocal softtabstop=8
-au FileType text setlocal noexpandtab
-au FileType text setlocal textwidth=80
-au FileType text setlocal wrap
-au FileType text setlocal sidescroll=8
-au FileType text setlocal spell
-au FileType text setlocal formatoptions=atqnp
-au FileType text setlocal number
-au FileType text let &numberwidth = (winwidth('%') - &textwidth) / 2
-au FileType text let &colorcolumn = '+1,+2,+3,+4,+5,+6,+7,+8,+9,+10'
-au FileType text let &colorcolumn = join(range(&textwidth + 1, &textwidth + &numberwidth), ",")
-" ( (one or more digits) then (a tab) ) or ( (one or more whitespace) then (a
-" dash, asterisk, or plus) then (one or more whitespace) )
-"au FileType text setlocal formatlistpat=^\\(\\d\\+[.)][\\t]\\)\\\|\\(\\s*[-*+]\\s\\+\\)
-"au FileType text setlocal formatlistpat=^\\s*\\d\\+\.[\\t\ ]\\s*
-au FileType text setlocal formatlistpat=^\\s*\\([0-9]\\+\\\|[a-z]\\)[\\].:)}]\\s\\+
-au FileType text colorscheme text
-
-au FileType markdown setlocal nofoldenable
-au FileType markdown setlocal conceallevel=2
-au FileType markdown setlocal textwidth=79 "auto wrap
 au FileType markdown setlocal wrap
+au FileType markdown setlocal textwidth=79 "auto wrap
 au FileType markdown setlocal spell
-au FileType markdown call pencil#init({'wrap': 'soft', 'joinspaces': 1, 'cursorwrap': 0, 'autoformat': 1, 'textwidth': 79})
-au FileType markdown call MySpecialFunction()
-"au FileType markdown colorscheme markdown
+au FileType markdown setlocal tabstop=2
+au FileType markdown setlocal shiftwidth=2
+au FileType markdown setlocal softtabstop=2
 
-au BufRead,BufNewFile *.tera setlocal filetype=htmldjango
-au FileType html,htmldjango setlocal tabstop=2
-au FileType html,htmldjango setlocal shiftwidth=2
-au FileType html,htmldjango setlocal softtabstop=2
-au FileType css setlocal tabstop=2
-au FileType css setlocal shiftwidth=2
-au FileType css setlocal softtabstop=2
-au FileType javascript setlocal tabstop=2
-au FileType javascript setlocal shiftwidth=2
-au FileType javascript setlocal softtabstop=2
-au FileType json setlocal tabstop=2
-au FileType json setlocal shiftwidth=2
-au FileType json setlocal softtabstop=2
-au FileType json setlocal conceallevel=0
+au BufRead,BufNewFile *.tera setlocal filetype=html
+au FileType html,css,javascript,json,htmldjango setlocal tabstop=2
+au FileType html,css,javascript,json,htmldjango setlocal shiftwidth=2
+au FileType html,css,javascript,json,htmldjango setlocal softtabstop=2
 
 au FileType toml setlocal tabstop=2
 au FileType toml setlocal shiftwidth=2
 au FileType toml setlocal softtabstop=2
 
-au FileType rust setlocal formatoptions-=o
-au FileType rust setlocal textwidth=79
-au FileType rust setlocal tabstop=4
-au FileType rust setlocal shiftwidth=4
-au FileType rust setlocal softtabstop=4
-
-
-au FileType lua setlocal tabstop=2
-au FileType lua setlocal shiftwidth=2
-au FileType lua setlocal softtabstop=2
-au FileType lua setlocal formatoptions=jcrqla
+au FileType lua,kahlua setlocal tabstop=2
+au FileType lua,kahlua setlocal shiftwidth=2
+au FileType lua,kahlua setlocal softtabstop=2
+au FileType lua,kahlua setlocal formatoptions=jcrqla
 
 au FileType asm setlocal tabstop=8
 au FileType asm setlocal shiftwidth=8
@@ -68,12 +29,11 @@ au FileType python setlocal shiftwidth=4
 au FileType python setlocal tabstop=4
 au FileType python setlocal softtabstop=4
 au FileType python setlocal expandtab
-"au FileType python setlocal formatoptions+=r
 au FileType python setlocal formatoptions=acrqnp
 au FileType python setlocal showmatch
 au FileType python setlocal nofoldenable
 au FileType python setlocal number
-au FileType python colorscheme python
+"au FileType python colorscheme python
 
 au FileType pdf setlocal rulerformat=BYTE:\ %o
 
