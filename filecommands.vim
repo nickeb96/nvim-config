@@ -3,6 +3,7 @@ au BufRead,BufNewFile *.tera setlocal filetype=html
 au FileType html,css,javascript,json,htmldjango setlocal tabstop=2
 au FileType html,css,javascript,json,htmldjango setlocal shiftwidth=2
 au FileType html,css,javascript,json,htmldjango setlocal softtabstop=2
+au FileType html setlocal iskeyword+=-
 
 au FileType toml setlocal tabstop=2
 au FileType toml setlocal shiftwidth=2
@@ -18,24 +19,14 @@ au FileType asm setlocal shiftwidth=8
 au FileType asm setlocal softtabstop=8
 au FileType asm setlocal noexpandtab
 
-au FileType python setlocal shiftwidth=4
-au FileType python setlocal tabstop=4
-au FileType python setlocal softtabstop=4
-au FileType python setlocal expandtab
-au FileType python setlocal formatoptions=acrqnp
-au FileType python setlocal showmatch
-au FileType python setlocal nofoldenable
-au FileType python setlocal number
-"au FileType python colorscheme python
-
-au FileType pdf setlocal rulerformat=BYTE:\ %o
+au FileType sql setlocal spell
+au FileType sql setlocal commentstring=--%s
 
 au FileType calendar setlocal noexpandtab
 
 au FileType gitcommit setlocal spell
 au FileType gitconfig setlocal noexpandtab
 
-au FileType fish colorscheme fish
 au FileType fish setlocal omnifunc=FishComplete
 au FileType fish inoremap <S-TAB> <C-X><C-O>
 au FileType fish inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -44,3 +35,4 @@ au FileType fish inoremap <expr> <BS> pumvisible() ? "<ESC>a" : "<BS>"
 
 au FileType sh setlocal formatoptions=crqanj
 au FileType sh setlocal formatlistpat=^\\s*\\([\\d]\\+[.)]\\\|[*-]\\)\\s*
+

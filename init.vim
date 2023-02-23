@@ -1,8 +1,11 @@
 
+" reduce shada jump records to 5 files and disable '/' history
+set shada=!,'5,<100,s4,h,/0,:10,@0
+set history=10
+
 call plug#begin('~/.local/share/nvim/site/plugs')
 source ~/.config/nvim/plugs.vim
 call plug#end()
-
 
 " use true colors instead of default
 set termguicolors
@@ -19,8 +22,11 @@ set foldmethod=expr
 set foldlevelstart=0
 "au BufRead * normal zR
 
+" disable lsp diagnostic column
+set signcolumn=no
+
 " remember cursor position from last session
-au BufReadPost *.rs,*.c,*.h,*.cpp,*.hpp,*.py,*.scm,*.js
+au BufReadPost *.rs,*.c,*.h,*.cpp,*.hpp,*.py,*.scm,*.js,*.vim
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal! g'\"" |
     \ endif
@@ -34,12 +40,34 @@ let main_color_scheme = "rusted"
 " make screen scroll 10 lines before end
 set scrolloff=10
 
+" make CTRL-U and CTRL-D move 10 lines at a time
+set scroll=10
+
+" make CTRL-U and CTRL-D center the screen on the cursor after (setting
+" scrolloff fixes a bug with scrolling at the beginning or end of the file)
+nnoremap <silent> <C-d> :set scrolloff=0<Enter><C-d>zz:set scrolloff=10<Enter>
+nnoremap <silent> <C-u> :set scrolloff=0<Enter><C-u>zz:set scrolloff=10<Enter>
+
 " use hybrid relative/absolute line numbers
 set relativenumber
 set number
 
-" allow mouse to be used in visual and insert mode
-set mouse=vi
+" toggle tab completion in plugin/lspconfig.lua
+if !exists("g:ENABLE_TAB_COMPLETION")
+    let g:ENABLE_TAB_COMPLETION = v:false
+endif
+nnoremap <silent> g<Tab> :let g:ENABLE_TAB_COMPLETION = g:ENABLE_TAB_COMPLETION == v:true ? v:false : v:true<Enter>
+
+" allow selected text to be moved up or down with J and K
+vnoremap <silent> J :m '>+1<CR>gv=gv
+vnoremap <silent> K :m '<-2<CR>gv=gv
+
+" use L to run something in lua
+nnoremap L :lua 
+
+" allow mouse to be used in normal, visual, and insert mode
+"set mouse=nvi
+set mouse=
 
 " preserve file creaton time
 set backupcopy=yes
@@ -49,9 +77,6 @@ set cmdheight=1 "I've disabled this temporarily because it fails to show up with
 
 " prevent opening history
 "nnoremap q <nop>
-
-" delete history on exit
-au VimLeave * call histdel(':')
 
 " use sh as the internal shell
 set shell=sh
@@ -63,12 +88,12 @@ set shell=sh
 " use custom US English dictionary instead of all English subsets
 set spelllang=en,personal
 
-" make grammarous use vim's interal spell checker
-let g:grammarous#use_vim_spelllang = 1
-
 " make statusline show useful information
-set statusline=%<%f\ \ %h%m%r%=%a%=%y\ \ \ %{&fileencoding}\ \ \ 0x%02.2B\ \ \ %-14.(%l:%c%V%)\ %P
-"au FileType pdf setlocal rulerformat=BYTE:\ %o
+set statusline=%<%f\ \ %h%m%r%=%a%=%y\ \ \ %{&fileencoding}\ %6.(0x%02.B%)\ \ %7.((%o)%)\ \ \ %-10.(%l:%c%V%)\ \ %P
+"au FileType pdf setlocal rulerformat=BYTE:\ %o  %-8.((%o)%)
+
+" have only one status line instead of one per window
+set laststatus=3
 
 " xml/html tag auto close
 let g:xmledit_enable_html = 1
@@ -80,7 +105,7 @@ let g:mkdp_preview_options = { 'disable_sync_scroll': 1 }
 " fix syntax highlighting in shell scripts
 let g:is_posix = 1
 
-" use C syntax highlighting the default for .h files
+" use C syntax highlighting for .h files instead of C++
 let g:c_syntax_for_h = 1
 
 " inform vim that you are using two spaces as sentence separators
@@ -100,11 +125,20 @@ let g:netrw_dirhistmax = 0
 " disable netrw banner
 let g:netrw_banner = 0
 
+" make netrw open files in new vertical windows with a width of 90 columns
+let g:netrw_browse_split = 4
+let g:netrw_preview = 1
+let g:netrw_winsize = -90
+
 " set tabs to be 4 spaces
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set expandtab
+
+" TODO: remove these lines
+" set conceallevel=2
+" set concealcursor=n
 
 " set colorscheme or use included fallback
 try
@@ -112,7 +146,6 @@ try
 catch
     colorscheme badwolf
 endtry
-
 
 source ~/.config/nvim/filecommands.vim
 source ~/.config/nvim/functions.vim

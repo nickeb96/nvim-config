@@ -6,18 +6,14 @@
 " realtime markdown previewer
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
-" fish script syntax highlighting
+" fish script syntax highlighting (merged into vim; no longer needed)
 "Plug 'nickeb96/fish.vim'
-Plug '~/Repositories/fish.vim'
 
 " pest grammar files
 Plug 'pest-parser/pest.vim'
 
 " wgsl shader files
 Plug 'DingDean/wgsl.vim'
-
-" language server client
-Plug 'neovim/nvim-lspconfig'
 
 " tree sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -29,14 +25,8 @@ Plug 'windwp/nvim-autopairs'
 " tree sitter highlight nvim under cursor
 Plug 'nvim-treesitter/playground'
 
-" text file and markdown editing
-"Plug 'reedes/vim-pencil'
-
-" toml syntax highlighting
-"Plug 'cespare/vim-toml'
-
-" color schemes
-"Plug 'rafi/awesome-vim-colorschemes'
+" xml/html tag closing
+Plug 'windwp/nvim-ts-autotag'
 
 " molokai color scheme
 Plug 'piersy/molokai'
@@ -44,14 +34,24 @@ Plug 'piersy/molokai'
 " sonokai color scheme
 Plug 'sainnhe/sonokai'
 
+" nordic color scheme
+Plug 'AlexvZyl/nordic.nvim'
+
 " opengl shader syntax highlighting
 Plug 'tikhomirov/vim-glsl'
 
+" adds ys cs ds operators to insert, change, and delete surroundings
+Plug 'tpope/vim-surround'
+
+" adds gc operator for commenting
+Plug 'tpope/vim-commentary'
+
+" adds cr operator for coercing between snake_cases, PascalCase, etc.
+" Plug 'tpope/vim-abolish'
+Plug '~/Repositories/vim-abolish'
+
 " grammer checker
 "Plug 'rhysd/vim-grammarous'
-
-" xml/html tag closing
-Plug 'sukima/xmledit'
 
 " .md table formating
 Plug 'godlygeek/tabular'
@@ -61,4 +61,23 @@ Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
 " swift syntax highlighting
 Plug 'keith/swift.vim'
+
+" LSP Support
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+
+" Autocompletion Engine
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+"Plug 'hrsh7th/cmp-buffer'
+"Plug 'hrsh7th/cmp-path'
+"Plug 'saadparwaiz1/cmp_luasnip'
+"Plug 'hrsh7th/cmp-nvim-lua'
+
+"  Snippets
+Plug 'L3MON4D3/LuaSnip'
+"Plug 'rafamadriz/friendly-snippets'
+
+Plug 'VonHeikemen/lsp-zero.nvim', {'branch': 'v1.x'}
 

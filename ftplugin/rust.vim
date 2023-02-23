@@ -21,13 +21,13 @@ setlocal expandtab
 
 function rust#CommentFoldText()
     let l:linecount = v:foldend - v:foldstart + 1
-    let l:content = substitute(getline(v:foldstart), '^\(\s*\)//[/!]\s*\(.\{0,70}\).*$', '\1··· \2' ,'')
-    return l:content .. ' (' .. l:linecount .. ' lines)'
+    let l:content = substitute(getline(v:foldstart), '^\(\s*\)//[/!]\s*\(.\{0,60}\).*$', '\1··· \2' ,'')
+    return l:content .. ' ··· (' .. l:linecount .. ' lines)'
 endfunction
 
+setlocal fillchars=fold:\ 
 setlocal foldtext=rust#CommentFoldText()
 setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()
-"lua require'lspconfig'.rust_analyzer.setup({})
 
 setlocal spell
