@@ -1,7 +1,19 @@
 
+(emphasis) @text.italic
+(strong_emphasis) @text.bold
+(code_span) @text.literal
+(strikethrough) @text.strikethrough
 
-(emphasis) @text.emphasis
-(strong_emphasis) @text.strong
+((emphasis_delimiter) @punctuation.special (#set! conceal ""))
+((code_span_delimiter) @punctuation.special (#set! conceal ""))
 
-(emphasis_delimiter) @punctuation.special
+(uri_autolink) @text.uri
+(inline_link [ "[" "]" ] @punctuation.special (#set! conceal ""))
+(inline_link [ "(" (link_destination) ")" ] @text.literal (#set! conceal ""))
+(link_text) @text.uri
+;(link_destination) @text.literal
+(link_title) @text
+(image) @punctuation.special
+(image_description) @text.literal
+(shortcut_link [ "[" "]" ] @punctuation.delimiter (#set! conceal ""))
 

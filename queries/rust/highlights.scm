@@ -3,7 +3,8 @@
 
 ; Identifiers
 
-((identifier) @variable (#lua-match? @variable "[a-z_][a-z0-9_]*"))
+; ((identifier) @variable (#lua-match? @variable "^[a-z_][a-z0-9_]*$"))
+(identifier) @variable (#set! "priority" 50)
 
 ; Literals
 (boolean_literal) @boolean
@@ -44,27 +45,27 @@
 (mod_item name: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 
 ; Path components
-(scoped_identifier path: [(self) (super) (crate)] @namespace.special)
+(scoped_identifier path: [(self) (super) (crate)] @namespace.builtin)
 (scoped_identifier path: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 (scoped_identifier path: ((identifier) @type.builtin (#any-of? @type.builtin
         "u8" "i8" "u16" "i16" "u32" "i32" "u64" "i64" "u128" "i128"
         "isize" "usize" "f32" "f64" "bool" "char" "str")))
 (use_declaration argument: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-(use_wildcard [(self) (super) (crate)] @namespace.special)
+(use_wildcard [(self) (super) (crate)] @namespace.builtin)
 (use_wildcard (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 
 ; Path ending
 (scoped_identifier name: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 (use_wildcard "*" @include)
 
-(scoped_use_list path: [(self) (super) (crate)] @namespace.special)
+(scoped_use_list path: [(self) (super) (crate)] @namespace.builtin)
 (scoped_use_list path: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 
-(scoped_type_identifier path: [(self) (super) (crate)] @namespace.special)
+(scoped_type_identifier path: [(self) (super) (crate)] @namespace.builtin)
 (scoped_type_identifier path: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 
 ; Path use list contents
-(use_list [(self) (super)] @namespace.special)
+(use_list [(self) (super)] @namespace.builtin)
 (use_list (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
 
 
@@ -210,6 +211,7 @@
 ;  (token_tree "=" @punctuation.delimiter)
 ;  )
 
+
 (let_declaration "=" @operator)
 (if_let_expression "=" @operator)
 (let_else_expression "=" @operator)
@@ -235,11 +237,14 @@
 (line_comment) @comment
 (block_comment) @comment
 
+(outer_doc_comment) @comment.doc
+(inner_doc_comment) @comment.doc
+
 ;(line_comment @todo (#lua-match? @todo "TODO"))
 ;(block_comment "TODO" @todo)
 
-;(call_expression
-;  arguments: (arguments ")" @punctuation.bracket))
+(call_expression
+  arguments: (arguments ")" @punctuation.bracket))
 
 
 ["(" ")" "[" "]" "{" "}"]  @punctuation.bracket
@@ -259,6 +264,13 @@
 [(attribute_item) (inner_attribute_item)] @attribute
 (attribute_item ["[" "]"] @attribute)
 (inner_attribute_item ["[" "]"] @attribute)
+; (attribute
+;   (identifier) @attribute
+;   arguments: (token_tree ["(" ")" (identifier)] @attribute))
+
+; (attribute arguments: (token_tree (identifier) @attribute))
+
+
 (meta_arguments ["(" ")"] @attribute)
 (meta_item (_) @attribute)
 (attr_item (_) @attribute)
