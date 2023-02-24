@@ -237,8 +237,8 @@
 (line_comment) @comment
 (block_comment) @comment
 
-(outer_doc_comment) @comment.doc
-(inner_doc_comment) @comment.doc
+(outer_doc_comment) @comment.doc @spell
+(inner_doc_comment) @comment.doc @spell
 
 ;(line_comment @todo (#lua-match? @todo "TODO"))
 ;(block_comment "TODO" @todo)
