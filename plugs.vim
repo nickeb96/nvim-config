@@ -47,8 +47,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
 " adds cr operator for coercing between snake_cases, PascalCase, etc.
-" Plug 'tpope/vim-abolish'
-Plug '~/Repositories/vim-abolish'
+Plug 'tpope/vim-abolish'
 
 " grammer checker
 "Plug 'rhysd/vim-grammarous'
