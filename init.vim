@@ -26,10 +26,13 @@ set foldlevelstart=0
 set signcolumn=no
 
 " remember cursor position from last session
-au BufReadPost *.rs,*.c,*.h,*.cpp,*.hpp,*.py,*.scm,*.js,*.vim
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal! g'\"" |
-    \ endif
+augroup remembercursor
+    autocmd!
+    au BufReadPost *.rs,*.c,*.h,*.py,*.vim,*.lua,*.scm,*.html,*.css,*.js
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal! g'\"" |
+        \ endif
+augroup END
 
 " highlight yanked test for a bit
 au TextYankPost * silent! lua vim.highlight.on_yank { higroup='Search', timeout=500 }
@@ -37,16 +40,34 @@ au TextYankPost * silent! lua vim.highlight.on_yank { higroup='Search', timeout=
 " colorscheme
 let main_color_scheme = "rusted"
 
+" make statusline show useful information
+set statusline=%<%f\ \ %h%m%r%=%a%=%y\ \ \ %{&fileencoding}\ %6.(0x%02.B%)\ \ %7.((%o)%)\ \ \ %-10.(%l:%c%V%)\ \ %P
+
+" have only one status line instead of one per window
+set laststatus=3
+
 " make screen scroll 10 lines before end
-set scrolloff=10
+let g:desired_scrolloff = 10
+let &scrolloff = g:desired_scrolloff
 
 " make CTRL-U and CTRL-D move 10 lines at a time
-set scroll=10
+let g:desired_scroll = 10
+let &scroll = g:desired_scroll
 
 " make CTRL-U and CTRL-D center the screen on the cursor after (setting
 " scrolloff fixes a bug with scrolling at the beginning or end of the file)
-nnoremap <silent> <C-d> :set scrolloff=0<Enter><C-d>zz:set scrolloff=10<Enter>
-nnoremap <silent> <C-u> :set scrolloff=0<Enter><C-u>zz:set scrolloff=10<Enter>
+nnoremap <silent> <C-d> :set scrolloff=0<Enter><C-d>zz:let &scrolloff=g:desired_scrolloff<Enter>
+nnoremap <silent> <C-u> :set scrolloff=0<Enter><C-u>zz:let &scrolloff=g:desired_scrolloff<Enter>
+
+" have / prepend \v to make +, |, () not need escape
+" nnoremap / /\v
+
+" use ? for :nohl instead of reverse search
+nnoremap <silent> ? :nohl<Enter>:echon ''<Enter>
+vnoremap <silent> ? :nohl<Enter>:echon ''<Enter>
+
+" nnoremap k <C-Y>
+" nnoremap j <C-E>
 
 " use hybrid relative/absolute line numbers
 set relativenumber
@@ -63,11 +84,15 @@ vnoremap <silent> J :m '>+1<CR>gv=gv
 vnoremap <silent> K :m '<-2<CR>gv=gv
 
 " use L to run something in lua
-nnoremap L :lua 
+"nnoremap L :lua =
 
 " allow mouse to be used in normal, visual, and insert mode
 "set mouse=nvi
 set mouse=
+
+" map scroll wheel to screen scrolling instead of cursor vertical movement
+map <ScrollWheelUp> <C-Y>
+map <ScrollWheelDown> <C-E>
 
 " preserve file creaton time
 set backupcopy=yes
@@ -86,14 +111,11 @@ set shell=sh
 "set wildignorecase
 
 " use custom US English dictionary instead of all English subsets
-set spelllang=en,personal
+" set spelllang=en,personal
+" set spelllang=en
 
-" make statusline show useful information
-set statusline=%<%f\ \ %h%m%r%=%a%=%y\ \ \ %{&fileencoding}\ %6.(0x%02.B%)\ \ %7.((%o)%)\ \ \ %-10.(%l:%c%V%)\ \ %P
-"au FileType pdf setlocal rulerformat=BYTE:\ %o  %-8.((%o)%)
-
-" have only one status line instead of one per window
-set laststatus=3
+" folding based on section
+let g:markdown_folding = 1
 
 " xml/html tag auto close
 let g:xmledit_enable_html = 1
@@ -130,6 +152,10 @@ let g:netrw_browse_split = 4
 let g:netrw_preview = 1
 let g:netrw_winsize = -90
 
+" list mode chars
+set listchars=eol:\\u21B5,tab:\\u2504\\u2504\\u2524,space:\\u2022,nbsp:\\u25a0
+            \,trail:\\u2593,extends:\\u2192,precedes:\\u2190
+
 " set tabs to be 4 spaces
 set shiftwidth=4
 set tabstop=4
@@ -142,7 +168,7 @@ set expandtab
 
 " set colorscheme or use included fallback
 try
-    execute 'colorscheme ' . main_color_scheme
+    execute 'colorscheme ' .. main_color_scheme
 catch
     colorscheme badwolf
 endtry

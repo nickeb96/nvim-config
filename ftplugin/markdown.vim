@@ -3,11 +3,13 @@ if exists("b:did_ftplugin")
 endif
 let b:did_ftplugin = 1
 
+
 setlocal wrap
 setlocal linebreak
 setlocal breakindent
 setlocal breakindentopt=list:-1
-setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+" setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+>]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\(\\s*[-*+>]\\s\\+\\)\\+
 setlocal formatoptions=
 setlocal tabstop=4
 setlocal shiftwidth=4
@@ -51,7 +53,31 @@ function s:MoveCursorRight()
     call setpos('.', l:cursorpos)
 endfunction
 
-au InsertLeave *.md     if s:IsFirstDisplayColumn()
-                    \ |     call s:MoveCursorRight()
-                    \ | endif
+function s:MakeRightGutter()
+    if winnr('$') == 1 && len(getbufinfo({'buflisted': 1})) == 1
+        let l:winwidth = winwidth('%')
+        let l:needed = &numberwidth + 80 + 1
+        if l:needed < l:winwidth
+            let l:mainwinid = winnr()
+            let l:remaining = l:winwidth - l:needed
+            setlocal splitright
+            exec l:remaining .. 'vnew'
+            setlocal nonumber norelativenumber
+            setlocal fillchars=eob:\ 
+            let l:gutterwinid = winnr()
+            wincmd p
+            exec 'au QuitPre <buffer> ' .. l:gutterwinid .. "wincmd c"
+        endif
+        hi WinSeparator guifg=#1d1f21 guibg=#1d1f21
+    endif
+endfunction
+
+augroup markdown
+    autocmd!
+    au InsertLeave *.md     if s:IsFirstDisplayColumn()
+                        \ |     call s:MoveCursorRight()
+                        \ | endif
+    au VimEnter *.md        call s:MakeRightGutter()
+augroup END
+
 
