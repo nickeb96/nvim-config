@@ -13,9 +13,7 @@ How to Update Spell Files
 -------------------------
 
 1.  `cd` to `~/.config/nvim/spell/` first
-2.  open neovim
-3.  type `:mkspell! personal`
-    + `personal` is the name of the locale
+2.  run `:mkspell! en en_US en_SW`
     + The `!` overwrites the existing `.spl` file
 
 

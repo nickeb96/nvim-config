@@ -26,16 +26,16 @@ PFX U Y 1
 PFX U   0     un         .
 
 PFX C Y 1
-PFX C   0     de          .
+PFX C   0     de         .
 
 PFX E Y 1
-PFX E   0     dis         .
+PFX E   0     dis        .
 
 PFX F Y 1
-PFX F   0     con         .
+PFX F   0     con        .
 
 PFX K Y 1
-PFX K   0     pro         .
+PFX K   0     pro        .
 
 SFX V N 2
 SFX V   e     ive        e
