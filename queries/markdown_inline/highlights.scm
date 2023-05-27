@@ -10,10 +10,12 @@
 (uri_autolink) @text.uri @nospell
 (inline_link [ "[" "]" ] @punctuation.special (#set! conceal ""))
 (inline_link [ "(" (link_destination) ")" ] @text.literal @nospell (#set! conceal ""))
+(image [ "(" (link_destination) ")" ] @text.literal @nospell (#set! conceal ""))
 (link_text) @text.uri
 ;(link_destination) @text.literal
 (link_title) @text
-(image) @punctuation.special
-(image_description) @text.literal
+;(image) @punctuation.special
+(image) @text.dim
+(image_description) @text.dim
 (shortcut_link [ "[" "]" ] @punctuation.delimiter (#set! conceal ""))
 

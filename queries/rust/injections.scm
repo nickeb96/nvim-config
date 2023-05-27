@@ -1,5 +1,5 @@
-; (macro_invocation
-;   (token_tree) @rust)
+(macro_invocation
+  (token_tree) @rust)
 
 ; ((macro_invocation
 ;   (token_tree) @injection.content)
@@ -15,6 +15,7 @@
 
 ;((outer_doc_comment) @markdown)
 ;((inner_doc_comment) @markdown)
+
 
 (call_expression
   function: (scoped_identifier

@@ -7,14 +7,18 @@ let g:loaded_identspell = 1
 function s:split_identifier(identifier)
     " split on one of:
     "   _ (literal underscore)
-    "   \u (uppercase letter) '\zs' and '\ze' to set match bounds
+    "   - (literal hyphen)
+    "   \u (uppercase letter) '\zs' and '\ze' to set match boundaries
     "   \d+ (one or more digits)
-    return split(a:identifier, '_\|\U\zs\ze\u\|\d\+')
+    return split(a:identifier, '\v_|-|\U\zs\ze\u|\d+')
 endfunction
 
 function s:check_identifier(identifier)
     let l:words = s:split_identifier(a:identifier)
     for l:word in l:words
+        if len(l:word) == 0
+            continue
+        endif
         let [_, l:status] = spellbadword(toupper(l:word))
         if l:status ==# 'bad'
             echohl DiagnosticError
@@ -48,6 +52,7 @@ function s:spell_check(word, ignore_case)
         echo a:word
         echohl Normal
         echon ' -> '
+        " redrawstatus
         let l:suggestions = spellsuggest(a:word)
         let l:available_width = v:echospace - (strlen(a:word) + 4)
         if len(l:suggestions) > 0

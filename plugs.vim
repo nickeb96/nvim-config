@@ -12,12 +12,20 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 " pest grammar files
 Plug 'pest-parser/pest.vim'
 
+" arm assembly files
+Plug 'ARM9/arm-syntax-vim'
+
 " wgsl shader files
 Plug 'DingDean/wgsl.vim'
 
 " tree sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" tree sitter context header lines
 Plug 'nvim-treesitter/nvim-treesitter-context'
+
+" tree sitter text objects
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 " tree sitter based auto pairs
 Plug 'windwp/nvim-autopairs'
@@ -48,6 +56,9 @@ Plug 'tpope/vim-commentary'
 
 " adds cr operator for coercing between snake_cases, PascalCase, etc.
 Plug 'tpope/vim-abolish'
+
+" ledger support
+Plug 'ledger/vim-ledger'
 
 " grammer checker
 "Plug 'rhysd/vim-grammarous'

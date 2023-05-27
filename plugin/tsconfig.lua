@@ -4,6 +4,7 @@ local parser_configs = parsers.get_parser_configs()
 parser_configs.rust = {
   install_info = {
     url = "https://github.com/nickeb96/tree-sitter-rust",
+    -- url = "~/Repositories/tree-sitter-rust",
     revision = "master",
     files = { "src/parser.c", "src/scanner.c" },
   },
@@ -12,17 +13,16 @@ parser_configs.rust = {
 require("nvim-treesitter.configs").setup {
   -- A list of parser names, or "all"
   ensure_installed = {
-    "rust", "lua", "regex", "scheme", "markdown", "markdown_inline",
-    "python", "html", "javascript"
+    "rust", "lua", "regex", "markdown", "markdown_inline",
+    "python", "html", "css", "javascript", "query"
   },
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
   highlight = {
-    -- `false` will disable the whole extension
     enable = true,
   },
   indent = {
-    enable = { "rust", "lua" },
+    enable = true,
   },
   fold = { "rust" },
   incremental_selection = {
@@ -32,6 +32,31 @@ require("nvim-treesitter.configs").setup {
       node_decremental = "-",
       init_selection = false,
       scope_incremental = false,
+    },
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      keymaps = {
+        ["ac"] = "@comment.around",
+        ["ic"] = "@comment.outer",
+        ["af"] = "@function.around",
+        ["if"] = "@function.outer",
+        -- ["at"] = "@class.around",
+        -- ["it"] = "@class.outer",
+        ["ai"] = "@impl.around",
+        ["ii"] = "@impl.outer",
+      },
+      selection_modes = {
+        ["@function.around"] = "v",
+        ["@function.outer"] = "V",
+      },
+      include_surrounding_whitespace = function(text_obj)
+        local suffix = "around"
+        local query_string = text_obj.query_string
+        -- local sm = text_obj.selection_mode
+        return query_string:sub(#query_string - #suffix + 1) == suffix
+      end,
     },
   },
 }
@@ -63,12 +88,8 @@ require("treesitter-context").setup {
 
 local autopairs_config = require("nvim-autopairs")
 autopairs_config.setup {
-  disable_filetype = {"markdown"},
+  disable_filetype = { "markdown", "text" },
   check_ts = true,
-  ts_config = {
-    markdown = false,
-    markdown_inline = false,
-  },
 }
 autopairs_config.remove_rule("`")
 
