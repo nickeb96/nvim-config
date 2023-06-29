@@ -15,9 +15,9 @@ setlocal spellcapcheck=[.?!]\ \\{2}
 setlocal nowrap
 setlocal sidescroll=8
 
-setlocal shiftwidth=8
 setlocal tabstop=8
-setlocal softtabstop=8
+setlocal shiftwidth=0
+setlocal softtabstop=-1
 setlocal noexpandtab
 
 
@@ -41,12 +41,17 @@ function Min(first, second)
     endif
 endfunction
 
-let s:totalwidth = (winwidth('%') - &l:textwidth)
-let s:halfwidth = s:totalwidth / 2
-let &l:numberwidth = Min(s:halfwidth, 20)
-let s:columnwidth = s:totalwidth - &l:numberwidth
-let &l:colorcolumn = join(range(&l:textwidth + 2, &l:textwidth + s:columnwidth + 2), ",")
-setlocal number
+if winwidth('%') > 80
+    let s:totalwidth = (winwidth('%') - &l:textwidth)
+    let s:halfwidth = s:totalwidth / 2
+    let &l:numberwidth = Min(s:halfwidth, 20)
+    let s:columnwidth = s:totalwidth - &l:numberwidth
+    let &l:colorcolumn = join(range(&l:textwidth + 2, &l:textwidth + s:columnwidth + 2), ",")
+    setlocal number
+else
+    setlocal nonumber
+    setlocal norelativenumber
+endif
 
 highlight Normal ctermfg=7 ctermbg=0 guifg=#c5c8c6 guibg=#191b1d
 highlight Visual ctermfg=15 ctermbg=8 guifg=#c5c8c6 guibg=#444444

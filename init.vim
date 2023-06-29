@@ -10,8 +10,14 @@ call plug#end()
 " use true colors instead of default
 set termguicolors
 
-" set cursor back to underline on exit
-au VimLeave * set guicursor=a:hor20
+augroup setcursor
+    autocmd!
+    " set cursor back to underline on exit
+    au VimLeave * set guicursor=a:hor20
+    " change terminal between suspend (ctrl-z) and resume (command fg)
+    au VimSuspend * set guicursor=a:hor20
+    au VimResume * set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20
+augroup END
 
 " clear search register on startup and exit
 au VimEnter * let @/=''
@@ -66,9 +72,6 @@ nnoremap <silent> <C-u> :set scrolloff=0<Enter><C-u>zz:let &scrolloff=g:desired_
 nnoremap <silent> ? :nohl<Enter>:echon ''<Enter>
 vnoremap <silent> ? :nohl<Enter>:echon ''<Enter>
 
-" nnoremap k <C-Y>
-" nnoremap j <C-E>
-
 " use hybrid relative/absolute line numbers
 set relativenumber
 set number
@@ -82,9 +85,6 @@ nnoremap <silent> g<Tab> :let g:ENABLE_TAB_COMPLETION = g:ENABLE_TAB_COMPLETION 
 " allow selected text to be moved up or down with J and K
 vnoremap <silent> J :m '>+1<CR>gv=gv
 vnoremap <silent> K :m '<-2<CR>gv=gv
-
-" use L to run something in lua
-"nnoremap L :lua =
 
 " allow mouse to be used in normal, visual, and insert mode
 "set mouse=nvi
@@ -100,19 +100,8 @@ set backupcopy=yes
 " make ex command line only appear in command mode
 set cmdheight=1 "I've disabled this temporarily because it fails to show up with macros and other cmd mode tools
 
-" prevent opening history
-"nnoremap q <nop>
-
 " use sh as the internal shell
 set shell=sh
-
-" ignore case on tab completion of commands and functions
-"set ignorecase "dont use this because it messes up regex searching
-"set wildignorecase
-
-" use custom US English dictionary instead of all English subsets
-" set spelllang=en,personal
-" set spelllang=en
 
 " folding based on section
 let g:markdown_folding = 1
@@ -156,15 +145,14 @@ let g:netrw_winsize = -90
 set listchars=eol:\\u21B5,tab:\\u2504\\u2504\\u2524,space:\\u2022,nbsp:\\u25a0
             \,trail:\\u2593,extends:\\u2192,precedes:\\u2190
 
-" set tabs to be 4 spaces
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
-set expandtab
+" disable nroff directives for paragraph motions
+set paragraphs=
 
-" TODO: remove these lines
-" set conceallevel=2
-" set concealcursor=n
+" set tabs to be 4 spaces
+set expandtab
+set tabstop=4
+set shiftwidth=0
+set softtabstop=-1
 
 " set colorscheme or use included fallback
 try

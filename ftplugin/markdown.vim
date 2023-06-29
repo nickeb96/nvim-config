@@ -12,8 +12,8 @@ setlocal breakindentopt=list:-1
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\(\\s*[-*+>]\\s\\+\\)\\+
 setlocal formatoptions=
 setlocal tabstop=4
-setlocal shiftwidth=4
-setlocal softtabstop=4
+setlocal shiftwidth=0
+setlocal softtabstop=-1
 
 setlocal concealcursor=n
 setlocal conceallevel=2

@@ -1,9 +1,34 @@
 0
 
 ok
+todo
+arg/SM
+eval/SM
+config/SM
+async/SM
+mutex/SM
+
+executable/SM
+builtin/SM
+
+autocomplete/GNXDRS
+
+customizable
+
+parser/SM
+
+preallocate/GSD
+preallocation/SM
+bool/SM
+
+whitespace/SM
+
+compose/B
 
 abc
 xyz
+
+cartesian
 
 stdin
 stdout
@@ -71,8 +96,14 @@ PID
 PPID
 TCP
 UDP
+HTTPS
+SFTP
+SMTP
+IMAP
 PNG
 RGB
 CMY
 CMYK
+ABI
+EOF
 
