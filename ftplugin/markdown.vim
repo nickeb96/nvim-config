@@ -8,10 +8,10 @@ setlocal wrap
 setlocal linebreak
 setlocal breakindent
 setlocal breakindentopt=list:-1
-" setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+>]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:\\&^.\\{4\\}
+setlocal breakat=\ 
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\(\\s*[-*+>]\\s\\+\\)\\+
 setlocal formatoptions=
-setlocal tabstop=4
+setlocal tabstop=2
 setlocal shiftwidth=0
 setlocal softtabstop=-1
 
@@ -68,8 +68,28 @@ function s:MakeRightGutter()
             wincmd p
             exec 'au QuitPre <buffer> ' .. l:gutterwinid .. "wincmd c"
         endif
-        hi WinSeparator guifg=#1d1f21 guibg=#1d1f21
+        hi WinSeparator guifg=background guibg=background
     endif
+endfunction
+
+function s:TableFormat()
+    let l:pos = getpos('.')
+    normal! {
+    " Search instead of `normal! j` because of the table at beginning of file edge case.
+    call search('|')
+    normal! j
+    " Remove everything that is not a pipe, colon or hyphen next to a colon othewise
+    " well formated tables would grow because of addition of 2 spaces on the separator
+    " line by Tabularize /|.
+    let l:flags = (&gdefault ? '' : 'g')
+    execute 's/\(:\@<!-:\@!\|[^|:-]\)//e' . l:flags
+    execute 's/--/-/e' . l:flags
+    Tabularize /|
+    " Move colons for alignment to left or right side of the cell.
+    execute 's/:\( \+\)|/\1:|/e' . l:flags
+    execute 's/|\( \+\):/|:\1/e' . l:flags
+    execute 's/ /-/' . l:flags
+    call setpos('.', l:pos)
 endfunction
 
 augroup markdown
@@ -77,7 +97,8 @@ augroup markdown
     au InsertLeave *.md     if s:IsFirstDisplayColumn()
                         \ |     call s:MoveCursorRight()
                         \ | endif
-    au VimEnter *.md        call s:MakeRightGutter()
+    " au VimEnter *.md        call s:MakeRightGutter()
 augroup END
 
+command -buffer TableFormat call s:TableFormat()
 

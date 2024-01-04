@@ -7,6 +7,9 @@ eval/SM
 config/SM
 async/SM
 mutex/SM
+struct/SM
+
+respawn/MDG
 
 executable/SM
 builtin/SM
@@ -106,4 +109,10 @@ CMY
 CMYK
 ABI
 EOF
+
+Palantir
+
+viridian
+celadon
+
 

@@ -1,5 +1,5 @@
 
 ; (function_item) @fold
 
-(doc_comment_block) @fold
+(block_comment) @fold
 

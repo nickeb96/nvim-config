@@ -1,32 +1,34 @@
+
+
 (macro_invocation
-  (token_tree) @rust)
+  (token_tree "(" (_) @injection.content ")")
+  (#set! injection.language "rust"))
 
-; ((macro_invocation
-;   (token_tree) @injection.content)
-;  (#set! injection.language "rust")
-;  (#set! injection.include-children))
+([
+  (line_comment)
+  (block_comment)
+] @injection.content
+ (#set! injection.language "comment"))
 
-; ((macro_rule
-;   (token_tree) @injection.content)
-;  (#set! injection.language "rust")
-;  (#set! injection.include-children))
-
-;((doc_comment) @markdown (#offset! @markdown 0 4 0 0))
-
-;((outer_doc_comment) @markdown)
-;((inner_doc_comment) @markdown)
-
+((macro_invocation
+   macro: ((identifier) @injection.language)
+   (token_tree) @injection.content)
+ (#eq? @injection.language "html")
+ (#set! "priority" 199))
 
 (call_expression
   function: (scoped_identifier
     path: (identifier) @_regex (#eq? @_regex "Regex")
     name: (identifier) @_new (#eq? @_new "new"))
   arguments: (arguments
-    (raw_string_literal) @regex))
+    (raw_string_literal) @injection.content)
+    (#set! injection.language "regex"))
 
 (call_expression
   function: (scoped_identifier
     path: (scoped_identifier (identifier) @_regex (#eq? @_regex "Regex").)
     name: (identifier) @_new (#eq? @_new "new"))
   arguments: (arguments
-    (raw_string_literal) @regex))
+    (raw_string_literal) @injection.content)
+    (#set! injection.language "regex"))
+

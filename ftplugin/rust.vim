@@ -7,6 +7,17 @@ setlocal matchpairs+=<:>
 setlocal commentstring=//\ %s
 setlocal comments=b://!,b:///,O://
 
+setlocal suffixesadd=.rs
+setlocal include=^\s*use
+setlocal includeexpr=v:lua._rust_include_expr()
+setlocal isfname=@,48-57,_,:
+
+lua <<EOF
+function _rust_include_expr()
+    return vim.v.fname:gsub("::", "/")
+end
+EOF
+
 " lua <<EOF
 " function _rust_lsp_format()
 "     print("this is a test")
@@ -30,6 +41,8 @@ setlocal joinspaces
 setlocal spellcapcheck=[.?!]\ \\{2}
 setlocal nowrap
 
+setlocal spell
+
 setlocal expandtab
 setlocal tabstop=2
 setlocal shiftwidth=0
@@ -46,4 +59,3 @@ setlocal foldtext=s:CommentFoldText()
 setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()
 
-setlocal spell

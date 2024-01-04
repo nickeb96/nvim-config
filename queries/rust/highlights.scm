@@ -1,283 +1,672 @@
 
-; TODO: Assignment operator in enum definition
+; vim: foldmethod=marker foldlevel=2 foldcolumn=0
 
-; Identifiers
 
-; ((identifier) @variable (#lua-match? @variable "^[a-z_][a-z0-9_]*$"))
-(identifier) @variable (#set! "priority" 50)
 
-; Literals
-(boolean_literal) @boolean
-(integer_literal) @number
-(float_literal) @float
+;;;; Punctuation TODO
 
-(raw_string_literal) @string
-(string_literal) @string
-(escape_sequence) @string.escape
+; ["[" "]"] @punctuation.bracket
+["." "::" ";"] @punctuation.delimiter
 
-(char_literal) @character
+(declaration_list
+  "{" @punctuation.bracket
+  "}" @punctuation.bracket)
 
-(self) @variable.builtin
+(block
+  "{" @punctuation.bracket
+  "}" @punctuation.bracket)
 
-(field_identifier) @field
-(field_expression field: (integer_literal) @field)
+(match_block
+  "{" @punctuation.bracket
+  "}" @punctuation.bracket)
 
-; Types
+(match_arm
+  "=>" @punctuation.delimiter
+  ","? @punctuation.delimiter)
+
+("_" @keyword)
+(label "'" @label (identifier) @label)
+(while_expression ":" @punctuation.delimiter)
+(for_expression ":" @punctuation.delimiter)
+(loop_expression ":" @punctuation.delimiter)
+(block ":" @punctuation.delimiter)
+
+
+;;;; idk, figure out wtf this is (TODO)
+(macro_invocation (identifier) @function.macro)
+(macro_invocation (scoped_identifier
+                    name: (identifier) @function.macro))
+(macro_invocation "!" @function.macro)
+
+(macro_invocation
+  (token_tree ["," "(" ")" "[" "]" "{" "}"] @punctuation.bracket))
+
+
+
+;;;; Visibility
+
+(visibility_modifier
+  "pub" @keyword)
+
+(visibility_modifier
+  ["(" ")"] @punctuation.bracket)
+
+(visibility_modifier
+  [(crate) (super) (self)] @namespace.builtin)
+
+(visibility_modifier
+  "in" @keyword)
+
+;;;; Modules
+
+(mod_item
+  "mod" @include
+  name: (identifier) @namespace)
+
+(foreign_mod_item
+  (extern_modifier
+    "extern" @include))
+
+(extern_crate_declaration
+  "extern" @include
+  (crate) @include
+  (identifier) @namespace
+  "as"? @include
+  (identifier) @namespace)
+
+
+
+
+;;;; Paths
+
+; crate::...
+(scoped_identifier
+  path: [(crate) (super) (self)] @namespace.builtin)
+(scoped_type_identifier
+  path: [(crate) (super) (self)] @namespace.builtin)
+
+; this::...
+(scoped_identifier
+  path: (identifier) @namespace)
+(scoped_type_identifier
+  path: (identifier) @namespace)
+
+; ...::this::...
+(scoped_identifier
+  path: (scoped_identifier
+          name: (identifier) @namespace))
+(scoped_type_identifier
+  path: (scoped_identifier
+          name: (identifier) @namespace))
+
+
+;;;; Imports
+
+; use ...;
+(use_declaration
+  "use" @include)
+
+; use this;
+(use_declaration
+  argument: (identifier) @namespace)
+
+; use this::*;
+(use_wildcard
+  (identifier) @namespace
+  "*" @include)
+
+; use crate::*;
+(use_wildcard
+  [(crate) (super) (self)] @namespace.builtin
+  "*" @include)
+
+; use ...::this::*;
+(use_wildcard
+  (scoped_identifier
+    name: (identifier) @namespace)
+  "*" @include)
+
+; use crate::{...};
+(scoped_use_list
+  path: [(crate) (super) (self)] @namespace.builtin)
+
+; use this::{...};
+(scoped_use_list
+  path: (identifier) @namespace)
+
+; use ...::this::{...};
+(scoped_use_list
+  path: (scoped_identifier
+          name: (identifier) @namespace))
+
+; use ...::{self};
+(use_list
+  [(super) (self)] @namespace.builtin)
+
+(use_list
+  "{" @punctuation.bracket
+  ","? @punctuation.delimiter
+  "}" @punctuation.bracket)
+
+; use ... as ...;
+(use_as_clause
+  "as" @include)
+
+
+
+
+
+;;;; Keywords
+
+
+
+
+
+(const_block "const" @keyword)
+
+
+(unsafe_block "unsafe" @keyword)
+(async_block "async" @keyword.coroutine "move"? @keyword)
+
+
+
+;;;; Types
+
 (type_identifier) @type
-((type_identifier) @type.builtin (#eq? @type.builtin "Self"))
-((identifier) @type (#lua-match? @type "^[A-Z][A-Za-z0-9]*[a-z0-9]$") (#lua-match? @type "[a-z]"))
-((identifier) @type.builtin (#eq? @type.builtin "Self"))
 
 (primitive_type) @type.builtin
 
-(pointer_type ["*" "const"] @storageclass)
+(empty_type "!" @type.builtin)
+
+(unit_type ["(" ")"] @type.builtin)
+
+(tuple_type ["(" ")"] @punctuation.bracket)
+(tuple_type "," @punctuation.delimiter)
+
+(array_type ["[" "]"] @punctuation.bracket)
+(array_type ";" @punctuation.delimiter)
+
+((type_identifier) @type.builtin (#eq? @type.builtin "Self"))
+((identifier) @type.builtin (#eq? @type.builtin "Self"))
+
+(qualified_type "as" @keyword)
+
+
+;;;; Type Declarations
+
+(struct_item
+  "struct" @keyword
+  name: (type_identifier) @type.struct)
+
+(union_item
+  "union" @keyword
+  name: (type_identifier) @type.union)
+
+(field_declaration_list
+  "{" @punctuation.bracket
+  ","? @punctuation.delimiter
+  "}" @punctuation.bracket)
+
+(field_declaration
+  ":" @punctuation.delimiter)
+
+(ordered_field_declaration_list
+  "(" @punctuation.bracket
+  ","? @punctuation.delimiter
+  ")" @punctuation.bracket)
+
+(enum_item
+  "enum" @keyword
+  name: (type_identifier) @type.enum)
+
+(enum_variant_list
+  "{" @punctuation.bracket
+  ","? @punctuation.delimiter
+  "}" @punctuation.bracket)
+
+(enum_variant
+  name: (identifier) @type.enum.variant
+  "="? @punctuation.delimiter)
+
+(type_item
+  "type" @keyword
+  name: (type_identifier) @type.definition
+  "=" @punctuation.delimiter)
+
+(associated_type
+  "type" @keyword
+  name: (type_identifier) @type.definition)
+
+(trait_item
+  "unsafe"? @keyword
+  "trait" @keyword
+  name: (type_identifier) @type.interface)
+
+
+;;;; Implementation Blocks
+
+; impl Type
+(impl_item
+  "impl" @keyword)
+
+; impl Trait for Type
+(impl_item
+  "unsafe"? @keyword
+  "impl" @keyword
+  "!"? @keyword.operator
+  trait: [(type_identifier) @type.interface
+          (scoped_type_identifier
+            name: (type_identifier) @type.interface)
+          (generic_type
+            type: (type_identifier) @type.interface)
+          (generic_type
+            type: (scoped_type_identifier
+                    name: (type_identifier) @type.interface))]
+  "for" @keyword)
+
+
+;;;; Type Parameters and Generics
+
+(type_parameters (type_identifier) @type.parameter)
+
+(where_clause "where" @keyword)
+
+(constrained_type_parameter
+  left: (type_identifier) @type.parameter)
+
+; handles:
+;   impl Trait
+;   impl ...::Trait
+;   impl Trait<...>
+;   impl ...::Trait<...>
+(abstract_type
+  "impl" @keyword
+  trait: [(type_identifier) @type.interface
+          (scoped_type_identifier
+            name: (type_identifier) @type.interface)
+          (generic_type
+            type: (type_identifier) @type.interface)
+          (generic_type
+            type: (scoped_type_identifier
+                    name: (type_identifier) @type.interface))
+          (function_type)])
+
+(dynamic_type
+  "dyn" @keyword
+  trait: [(type_identifier) @type.interface
+          (scoped_type_identifier
+            name: (type_identifier) @type.interface)
+          (generic_type
+            type: (type_identifier) @type.interface)
+          (generic_type
+            type: (scoped_type_identifier
+                    name: (type_identifier) @type.interface))
+          (function_type)])
+
+(trait_bounds ":" @punctuation.delimiter)
+
+(trait_bounds "+" @punctuation.delimiter)
+
+(trait_bounds (type_identifier) @type.interface)
+
+(removed_trait_bound "?" @keyword.operator)
+
+(type_parameters ["<" ">"] @punctuation.bracket)
+
+(bracketed_type ["<" ">"] @punctuation.bracket)
+(for_lifetimes ["<" ">"] @punctuation.bracket)
+
+
+
+
+;;;; Functions
+
+(function_item
+  "fn" @keyword.function
+  name: (identifier) @function
+  "->"? @punctuation.delimiter)
+
+(function_signature_item
+  "fn" @keyword.function
+  name: (identifier) @function
+  "->"? @punctuation.delimiter)
+
+(function_modifiers "unsafe" @keyword.function)
+(function_modifiers "async" @keyword.function)
+(function_modifiers "const" @keyword.function)
+(function_modifiers (extern_modifier "extern" @keyword.function))
+
+(parameters ["(" ")"] @punctuation.bracket)
+(parameters "," @punctuation.delimiter)
+
+(function_type
+  "fn" @keyword.function)
+(function_type
+  "->" @punctuation.delimiter)
+
+
+;;;; Constants / Statics
+
+(const_item
+  "const" @keyword
+  name: (identifier) @constant
+  ":"? @punctuation.delimiter
+  "="? @punctuation.delimiter)
+
+(const_parameter
+  "const" @keyword
+  name: (identifier) @constant.parameter
+  ":"? @punctuation.delimiter
+  "="? @punctuation.delimiter)
+
+(static_item
+  "static" @keyword
+  name: (identifier) @constant
+  ":"? @punctuation.delimiter
+  "="? @punctuation.delimiter)
+
+
+;;;; Variables
+
+(let_declaration
+  "let" @keyword
+  ":"? @punctuation.delimiter
+  "="? @punctuation.delimiter
+  "else"? @keyword)
+
+(let_condition
+  "let" @keyword
+  "=" @punctuation.delimiter)
+
+(let_chain
+  "&&" @operator.logical)
+
+(let_declaration
+  pattern: (identifier) @variable)
+
+(parameter
+  pattern: (identifier) @parameter)
+
+(parameter
+  ":" @punctuation.delimiter)
+
+((field_expression
+  field: (field_identifier) @field) @_member
+ (#not-has-parent? @_member call_expression))
+
+(field_expression
+  field: (integer_literal) @field)
+
+(field_initializer_list
+  "{" @punctuation.bracket
+  ","? @punctuation.delimiter
+  "}" @punctuation.bracket)
+
+(base_field_initializer
+  ".." @punctuation.delimiter)
+
+(field_initializer
+  (field_identifier) @field
+  ":" @punctuation.delimiter)
+
+(shorthand_field_initializer (identifier) @field) ; TODO increase priority or move lower
+
+((self) @variable.builtin
+        (#not-has-parent? @variable.builtin scoped_identifier scoped_type_identifier use_list))
+
+
+;;;; Closures
+
+(closure_expression "move" @keyword)
+
+(closure_parameters "|" @punctuation.bracket)
+(closure_parameters "," @punctuation.delimiter)
+
+(closure_expression "->" @punctuation.delimiter)
+
+
+;;;; References
+
+(lifetime
+  "'" @storageclass.lifetime
+  (identifier) @storageclass.lifetime)
+
 (mutable_specifier) @storageclass
-(reference_type "&" @storageclass)
-(self_parameter "&" @storageclass)
-(reference_pattern "&" @storageclass)
-(ref_pattern "ref" @storageclass)
 
-(lifetime "'" @type.definition (identifier) @type.definition)
+(pointer_type
+  "*" @storageclass)
 
-; Constants
-((identifier) @constant (#lua-match? @constant "^[A-Z][A-Z0-9_]*$"))
+(pointer_type
+  "const" @storageclass)
 
-(mod_item name: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
+(reference_type
+  "&" @storageclass)
 
-; Path components
-(scoped_identifier path: [(self) (super) (crate)] @namespace.builtin)
-(scoped_identifier path: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-(scoped_identifier path: ((identifier) @type.builtin (#any-of? @type.builtin
-        "u8" "i8" "u16" "i16" "u32" "i32" "u64" "i64" "u128" "i128"
-        "isize" "usize" "f32" "f64" "bool" "char" "str")))
-(use_declaration argument: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-(use_wildcard [(self) (super) (crate)] @namespace.builtin)
-(use_wildcard (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-
-; Path ending
-(scoped_identifier name: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-(use_wildcard "*" @include)
-
-(scoped_use_list path: [(self) (super) (crate)] @namespace.builtin)
-(scoped_use_list path: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-
-(scoped_type_identifier path: [(self) (super) (crate)] @namespace.builtin)
-(scoped_type_identifier path: (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
-
-; Path use list contents
-(use_list [(self) (super)] @namespace.builtin)
-(use_list (identifier) @namespace (#lua-match? @namespace "^[a-z][a-z0-9_]*$"))
+(self_parameter
+  "&" @storageclass)
 
 
-; Functions
-(function_item name: (identifier) @function)
-(function_signature_item (identifier) @function)
+(ref_pattern
+  "ref" @storageclass)
 
-(call_expression function: ((identifier) @function (#lua-match? @function "^[a-z][a-z0-9_]*$")))
-(call_expression function: (scoped_identifier ((identifier) @function (#lua-match? @function "^[a-z][a-z0-9_]*$"))))
+(reference_pattern
+  "&" @storageclass)
+
+(field_pattern
+  "ref" @storageclass)
+
+(reference_expression
+  "&" @storageclass)
+
+(unary_expression
+  "*" @storageclass)
+
+
+;;;; Patterns
+
+(tuple_pattern
+  ["(" ")"] @punctuation.bracket)
+(tuple_pattern
+  "," @punctuation.delimiter)
+
+(tuple_struct_pattern
+  type: [(identifier) @type.struct
+         (scoped_identifier
+           name: (identifier) @type.struct)])
+(tuple_struct_pattern
+  ["(" ")"] @punctuation.bracket)
+(tuple_struct_pattern
+  "," @punctuation.delimiter)
+
+(struct_pattern
+  type: [(type_identifier) @type.struct
+         (scoped_type_identifier
+           name: (type_identifier) @type.struct)])
+(struct_pattern
+  ["{" "}"] @punctuation.bracket)
+(struct_pattern
+  "," @punctuation.delimiter)
+
+(field_pattern
+  ":" @punctuation.delimiter)
+
+(slice_pattern
+  ["[" "]"] @punctuation.bracket)
+(slice_pattern
+  "," @punctuation.delimiter)
+
+(captured_pattern
+  "@" @punctuation.delimiter)
+
+(or_pattern
+  "|" @punctuation.delimiter)
+
+(range_pattern
+  "..=" @operator)
+
+(remaining_field_pattern
+  ".." @punctuation.delimiter)
+
+(match_pattern
+  "if" @conditional)
+
+(negative_literal "-" @number (integer_literal))
+(negative_literal "-" @float (float_literal))
+
+; Function calls
+
+(call_expression
+  function: (identifier) @function.call)
 
 (call_expression
   function: (scoped_identifier
-              path: ((identifier) @type.builtin
-                                  (#any-of? @type.builtin
-                                   "u8"
-                                   "i8"
-                                   "u16"
-                                   "i16"
-                                   "u32"
-                                   "i32"
-                                   "u64"
-                                   "i64"
-                                   "u128"
-                                   "i128"
-                                   "isize"
-                                   "usize"
-                                   "f32"
-                                   "f64"
-                                   "bool"
-                                   "char"
-                                   "str"
-                                   ))))
+              (identifier) @function.call .))
 
-(call_expression function: (field_expression field: (field_identifier) @function))
+(call_expression
+  function: (field_expression
+    field: (field_identifier) @method.call))
 
-(generic_function function: (identifier) @function)
-(generic_function function: (scoped_identifier name: (identifier) @function))
-(generic_function function: (field_expression field: (field_identifier) @function))
+(generic_function
+  function: (identifier) @function.call)
 
-(function_modifiers) @keyword.function
+(generic_function
+  function: (scoped_identifier
+    name: (identifier) @function.call))
 
-(closure_expression "move" @keyword.function)
+(generic_function
+  function: (field_expression
+    field: (field_identifier) @method.call))
 
+(arguments ["(" ")"] @punctuation.bracket)
+(arguments "," @punctuation.delimiter)
 
-; Macros
-(macro_invocation macro: (identifier) @function.macro)
-(macro_invocation macro: (scoped_identifier name: (identifier) @function.macro))
-(macro_invocation "!" @function.macro)
-
-
-; Keywords
-
-["use" "mod"] @include
-(use_as_clause "as" @include)
-
-[
-  "async"
-  "await"
-  "default"
-  "dyn"
-  "enum"
-  "extern"
-  "impl"
-  "let"
-  "match"
-  "pub"
-  "static"
-  "struct"
-  "trait"
-  "try"
-  "type"
-  "union"
-  "unsafe"
-  "where"
-] @keyword
-(const_item "const" @keyword)
-(const_parameter "const" @keyword)
-
-"fn" @keyword.function
-["return" "yield"] @keyword.return
-
-(type_cast_expression "as" @keyword.operator)
-(qualified_type "as" @keyword.operator)
-
-[
-  "if"
-  "else"
-] @conditional
-
-[
-  "loop"
-  "while"
-  "for"
-  "in"
-  "break"
-  "continue"
-] @repeat
-
-
-
-;;; Operators & Punctuation
-
-(binary_expression [
-  "+"
-  "-"
-  "*"
-  "/"
-  "%"
-  "=="
-  "!="
-  "<"
-  ">"
-  "<="
-  ">="
-  "&"
-  "|"
-  "^"
-  "<<"
-  ">>"
-  "&&"
-  "||"
-] @operator)
-
-(compound_assignment_expr [
-  "+="
-  "-="
-  "*="
-  "/="
-  "%="
-  "&="
-  "|="
-  "^="
-  "<<="
-  ">>="
-] @operator)
-
-(assignment_expression "=" @operator)
-
-; TODO: figure out why this doesn't work
-;(macro_invocation
-;  macro: ((identifier) @function.macro (#lua-match? @function.macro "^println$"))
-;  "!"
-;  (token_tree "=" @punctuation.delimiter)
-;  )
-
-
-(let_declaration "=" @operator)
-(if_let_expression "=" @operator)
-(let_else_expression "=" @operator)
-(const_item "=" @operator)
-(static_item "=" @operator)
-(type_item "=" @operator)
-
-(enum_variant "=" @operator)
+(type_arguments  ["<" ">"] @punctuation.bracket)
+(type_arguments  "," @punctuation.bracket)
 
 (type_binding "=" @punctuation.delimiter) ; i.e. IntoIterator<Item=i32>
 
-(unary_expression "*" @storageclass)
-(reference_expression "&" @storageclass)
 
-(unary_expression ["!" "-"] @operator)
+(await_expression "await" @keyword.coroutine)
+
+(return_expression "return" @keyword.return)
+
+
+;;;; Operators
+
+(assignment_expression "=" @operator)
+
+(binary_expression ["+" "-" "*" "/" "%"] @operator.arithmetic)
+(compound_assignment_expr ["+=" "-=" "*=" "/=" "%="] @operator.arithmetic)
+
+(binary_expression ["|" "&" "^" "<<" ">>"] @operator.bitwise)
+(compound_assignment_expr ["|=" "&=" "^=" "<<=" ">>="] @operator.bitwise)
+
+(binary_expression ["||" "&&"] @operator.logical)
+
+(binary_expression ["==" "!=" "<" ">" "<=" ">="] @operator.comparison)
+
+(unary_expression "!" @operator.bitwise)
+
+(unary_expression "-" @operator.arithmetic)
+
+(unary_expression "-" @number (integer_literal))
+
+(unary_expression "-" @float (float_literal))
 
 (try_expression "?" @operator)
 
 (range_expression [".." "..="] @operator)
-(range_pattern [".." "..="] @operator)
+
+(type_cast_expression "as" @keyword.operator)
 
 
-(line_comment) @comment
+;;;; Statements
+
+(if_expression "if" @conditional)
+(else_clause "else" @conditional)
+(match_expression "match" @conditional)
+
+(while_expression "while" @repeat)
+(for_expression "for" @repeat "in" @repeat)
+(loop_expression "loop" @repeat)
+(break_expression "break" @repeat)
+(continue_expression "continue" @repeat)
+
+(try_block "try" @keyword)
+
+
+;;;; Comments
+
+((line_comment) @comment
+  (#lua-match? @comment "^//[^/!]"))
+
+((line_comment) @comment
+  (#lua-match? @comment "^//$"))
+
+((line_comment) @comment
+  (#lua-match? @comment "^////"))
+
+((line_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^///[^/]"))
+
+((line_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^///$"))
+
+((line_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^//!"))
+
 (block_comment) @comment
 
-(outer_doc_comment) @comment.doc @spell
-(inner_doc_comment) @comment.doc @spell
+((block_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$"))
 
-;(line_comment @todo (#lua-match? @todo "TODO"))
-;(block_comment "TODO" @todo)
-
-(call_expression
-  arguments: (arguments ")" @punctuation.bracket))
+((block_comment) @comment.documentation
+  (#lua-match? @comment.documentation "^/[*][!]"))
 
 
-["(" ")" "[" "]" "{" "}"]  @punctuation.bracket
-(closure_parameters "|"    @punctuation.bracket)
-(type_arguments  ["<" ">"] @punctuation.bracket)
-(type_parameters ["<" ">"] @punctuation.bracket)
 
 
-["," "." ":" "::" ";"] @punctuation.delimiter
+;;;; Literals
 
-(remaining_field_pattern) @punctuation.delimiter
-(function_item "->" @punctuation.delimiter)
-(match_arm "=>" @punctuation.delimiter)
-(or_pattern "|" @punctuation.delimiter)
-(captured_pattern "@" @punctuation.delimiter)
+(boolean_literal) @boolean
+(integer_literal) @number
+(float_literal) @float
+(raw_string_literal) @string
+(string_literal) @string
+(escape_sequence) @string.escape
+(char_literal) @character
 
-[(attribute_item) (inner_attribute_item)] @attribute
-(attribute_item ["[" "]"] @attribute)
-(inner_attribute_item ["[" "]"] @attribute)
-; (attribute
-;   (identifier) @attribute
-;   arguments: (token_tree ["(" ")" (identifier)] @attribute))
+(array_expression
+  ["[" "]"] @punctuation.bracket)
+(array_expression
+  ["," ";"] @punctuation.delimiter)
 
-; (attribute arguments: (token_tree (identifier) @attribute))
+(tuple_expression
+  ["(" ")"] @punctuation.bracket)
+(tuple_expression
+  "," @punctuation.delimiter)
+
+(unit_expression
+  ["(" ")"] @type.builtin)
 
 
-(meta_arguments ["(" ")"] @attribute)
-(meta_item (_) @attribute)
-(attr_item (_) @attribute)
-(attr_item (scoped_identifier path: (_) @attribute name: (_) @attribute))
-(attr_item (scoped_identifier
-             path: (scoped_identifier path: (_) @attribute name: (_) @attribute)
-             name: (_) @attribute))
 
-(empty_type "!" @type.builtin)
+
+
+
+
+
+;;;; Attributes
+
+(inner_attribute_item ["#" "!" "[" "]"] @attribute.delimiter)
+(attribute_item ["#" "[" "]"] @attribute.delimiter)
+
+((attribute) @attribute (#set! priority 110))
+
+(attribute
+  arguments: (token_tree ["(" "," ")"] @attribute.delimiter))
+
+
+; TODO:
+;  as: <x as y> and 7i16 as i32
 

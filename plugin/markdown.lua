@@ -60,16 +60,22 @@ blockquote>* {
 pre {
   margin: 10px 20px;
 }
+:link {
+  color: #8ea0f3;
+}
+:visited {
+  color: #af6cec;
+}
 ]]
 
 
-function get_buffer_content()
+local function get_buffer_content()
   local num_lines = vim.api.nvim_buf_line_count(0)
   return vim.api.nvim_buf_get_lines(0, 0, num_lines, false)
 end
 
 
-function convert_buffer()
+local function convert_buffer()
   local lines = get_buffer_content()
   local job = vim.system(
     {"pulldown-cmark", "-SFLPHT"},
@@ -85,8 +91,8 @@ function convert_buffer()
 end
 
 
-function make_a_server()
-  local uv = vim.uv
+local function make_a_server()
+  local uv = vim.loop
   local server = uv.new_tcp()
   server:bind("127.0.0.1", PORT)
   server:listen(128, function (error)
@@ -96,22 +102,22 @@ function make_a_server()
       if error then
         return
       end
-      handle_request(client, chunk)
+      _markdown_server_handle_request(client, chunk)
     end))
   end)
 end
 
 
-function handle_request(client, raw_request)
-  local request = parse_request(raw_request)
+function _markdown_server_handle_request(client, raw_request)
+  local request = _markdown_server_parse_request(raw_request)
   if request.method == "GET" and request.path == "/" then
-    respond(client, {
+    _markdown_server_respond(client, {
       code = 200,
       message = "OK",
       body = convert_buffer(),
     })
   else
-    respond(client, {
+    _markdown_server_respond(client, {
       code = 404,
       message = "Not Found",
     })
@@ -119,7 +125,7 @@ function handle_request(client, raw_request)
 end
 
 
-function respond(client, response)
+function _markdown_server_respond(client, response)
   local lines = {
     string.format("HTTP/1.1 %d %s", response.code, response.message),
     "Accept: text/html",
@@ -139,7 +145,7 @@ function respond(client, response)
 end
 
 
-function parse_request(request)
+function _markdown_server_parse_request(request)
   local lines = {}
   local line_start = 1
   local start_of_body = nil
@@ -179,7 +185,7 @@ function parse_request(request)
 end
 
 
-function build_response(body)
+local function build_response(body)
   local response = {
     "HTTP/1.1 200 OK",
     "Accept: text/html",
@@ -191,7 +197,7 @@ function build_response(body)
 end
 
 
-function markdown_view(options)
+local function markdown_view(options)
   make_a_server()
   if not options.bang then
     local job = vim.system(
