@@ -6,20 +6,13 @@ end
 
 local parsers = require("nvim-treesitter.parsers")
 local parser_configs = parsers.get_parser_configs()
--- parser_configs.rust = {
---   install_info = {
---     url = "https://github.com/nickeb96/tree-sitter-rust",
---     -- url = "~/Repositories/tree-sitter-rust",
---     revision = "master",
---     files = { "src/parser.c", "src/scanner.c" },
---   },
--- }
 
 require("nvim-treesitter.configs").setup {
   -- A list of parser names, or "all"
   ensure_installed = {
     "rust", "lua", "regex", "comment", "markdown", "markdown_inline", "latex",
-    "python", "html", "css", "javascript", "query", "vim", "vimdoc", "bash", "c"
+    "python", "html", "css", "javascript", "toml", "query", "vim", "vimdoc",
+    "bash", "c"
   },
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -48,7 +41,10 @@ require("nvim-treesitter.configs").setup {
       -- },
     },
   },
-  fold = { "rust", "markdown" },
+  -- fold = { "rust", "markdown" },
+  fold = {
+    enable = true,
+  },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -68,8 +64,6 @@ require("nvim-treesitter.configs").setup {
         ["if"] = "@function.outer",
         ["ac"] = "@class.outer",
         ["ic"] = "@class.outer",
-        ["ai"] = "@impl.outer",
-        ["ii"] = "@impl.outer",
       },
       selection_modes = {
         -- ["@function.around"] = "v",
@@ -84,31 +78,6 @@ require("nvim-treesitter.configs").setup {
     },
   },
 }
-
--- require("treesitter-context").setup {
---   enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
---   max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
---   trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
---   patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
---     -- For all filetypes Note that setting an entry here replaces all other
---     -- patterns for this entry.  By setting the 'default' entry below, you can
---     -- control which nodes you want to appear in the context window.
---     default = {
---       "function",
---       "method",
---     },
---     -- Example for a specific filetype.  If a pattern is missing, *open a
---     -- PR* so everyone can benefit.
---     rust = {
---       "impl_item",
---     },
---   },
---   exact_patterns = {
---     -- Example for a specific filetype with Lua patterns Treat patterns.rust as
---     -- a Lua pattern (i.e "^impl_item$" will exactly match "impl_item" only)
---     -- rust = true,
---   },
--- }
 
 local autopairs = require("nvim-autopairs")
 autopairs.setup {

@@ -24,6 +24,9 @@
   "=>" @punctuation.delimiter
   ","? @punctuation.delimiter)
 
+(where_clause
+  "," @punctuation.delimiter)
+
 ("_" @keyword)
 (label "'" @label (identifier) @label)
 (while_expression ":" @punctuation.delimiter)
@@ -31,6 +34,7 @@
 (loop_expression ":" @punctuation.delimiter)
 (block ":" @punctuation.delimiter)
 
+(parenthesized_expression ["(" ")"] @punctuation.bracket)
 
 ;;;; idk, figure out wtf this is (TODO)
 (macro_invocation (identifier) @function.macro)
@@ -46,33 +50,33 @@
 ;;;; Visibility
 
 (visibility_modifier
-  "pub" @keyword)
+  "pub" @keyword.modifier)
 
 (visibility_modifier
   ["(" ")"] @punctuation.bracket)
 
 (visibility_modifier
-  [(crate) (super) (self)] @namespace.builtin)
+  [(crate) (super) (self)] @module.builtin)
 
 (visibility_modifier
-  "in" @keyword)
+  "in" @keyword.modifier)
 
 ;;;; Modules
 
 (mod_item
-  "mod" @include
-  name: (identifier) @namespace)
+  "mod" @keyword.import
+  name: (identifier) @module)
 
 (foreign_mod_item
   (extern_modifier
-    "extern" @include))
+    "extern" @keyword.import))
 
 (extern_crate_declaration
-  "extern" @include
-  (crate) @include
-  (identifier) @namespace
-  "as"? @include
-  (identifier) @namespace)
+  "extern" @keyword.import
+  (crate) @keyword.import
+  (identifier) @module
+  "as"? @keyword.import
+  (identifier) @module)
 
 
 
@@ -81,67 +85,67 @@
 
 ; crate::...
 (scoped_identifier
-  path: [(crate) (super) (self)] @namespace.builtin)
+  path: [(crate) (super) (self)] @module.builtin)
 (scoped_type_identifier
-  path: [(crate) (super) (self)] @namespace.builtin)
+  path: [(crate) (super) (self)] @module.builtin)
 
 ; this::...
 (scoped_identifier
-  path: (identifier) @namespace)
+  path: (identifier) @module)
 (scoped_type_identifier
-  path: (identifier) @namespace)
+  path: (identifier) @module)
 
 ; ...::this::...
 (scoped_identifier
   path: (scoped_identifier
-          name: (identifier) @namespace))
+          name: (identifier) @module))
 (scoped_type_identifier
   path: (scoped_identifier
-          name: (identifier) @namespace))
+          name: (identifier) @module))
 
 
 ;;;; Imports
 
 ; use ...;
 (use_declaration
-  "use" @include)
+  "use" @keyword.import)
 
 ; use this;
 (use_declaration
-  argument: (identifier) @namespace)
+  argument: (identifier) @module)
 
 ; use this::*;
 (use_wildcard
-  (identifier) @namespace
-  "*" @include)
+  (identifier) @module
+  "*" @keyword.import)
 
 ; use crate::*;
 (use_wildcard
-  [(crate) (super) (self)] @namespace.builtin
-  "*" @include)
+  [(crate) (super) (self)] @module.builtin
+  "*" @keyword.import)
 
 ; use ...::this::*;
 (use_wildcard
   (scoped_identifier
-    name: (identifier) @namespace)
-  "*" @include)
+    name: (identifier) @module)
+  "*" @keyword.import)
 
 ; use crate::{...};
 (scoped_use_list
-  path: [(crate) (super) (self)] @namespace.builtin)
+  path: [(crate) (super) (self)] @module.builtin)
 
 ; use this::{...};
 (scoped_use_list
-  path: (identifier) @namespace)
+  path: (identifier) @module)
 
 ; use ...::this::{...};
 (scoped_use_list
   path: (scoped_identifier
-          name: (identifier) @namespace))
+          name: (identifier) @module))
 
 ; use ...::{self};
 (use_list
-  [(super) (self)] @namespace.builtin)
+  [(super) (self)] @module.builtin)
 
 (use_list
   "{" @punctuation.bracket
@@ -150,7 +154,7 @@
 
 ; use ... as ...;
 (use_as_clause
-  "as" @include)
+  "as" @keyword.import)
 
 
 
@@ -176,7 +180,7 @@
 
 (primitive_type) @type.builtin
 
-(empty_type "!" @type.builtin)
+(never_type "!" @type.builtin)
 
 (unit_type ["(" ")"] @type.builtin)
 
@@ -195,11 +199,11 @@
 ;;;; Type Declarations
 
 (struct_item
-  "struct" @keyword
+  "struct" @keyword.type
   name: (type_identifier) @type.struct)
 
 (union_item
-  "union" @keyword
+  "union" @keyword.type
   name: (type_identifier) @type.union)
 
 (field_declaration_list
@@ -215,8 +219,11 @@
   ","? @punctuation.delimiter
   ")" @punctuation.bracket)
 
+(field_declaration
+  name: (field_identifier) @variable.member)
+
 (enum_item
-  "enum" @keyword
+  "enum" @keyword.type
   name: (type_identifier) @type.enum)
 
 (enum_variant_list
@@ -229,17 +236,17 @@
   "="? @punctuation.delimiter)
 
 (type_item
-  "type" @keyword
+  "type" @keyword.type
   name: (type_identifier) @type.definition
   "=" @punctuation.delimiter)
 
 (associated_type
-  "type" @keyword
+  "type" @keyword.type
   name: (type_identifier) @type.definition)
 
 (trait_item
   "unsafe"? @keyword
-  "trait" @keyword
+  "trait" @keyword.type
   name: (type_identifier) @type.interface)
 
 
@@ -312,6 +319,7 @@
 (removed_trait_bound "?" @keyword.operator)
 
 (type_parameters ["<" ">"] @punctuation.bracket)
+(type_parameters "," @punctuation.delimiter)
 
 (bracketed_type ["<" ">"] @punctuation.bracket)
 (for_lifetimes ["<" ">"] @punctuation.bracket)
@@ -332,9 +340,9 @@
   "->"? @punctuation.delimiter)
 
 (function_modifiers "unsafe" @keyword.function)
-(function_modifiers "async" @keyword.function)
-(function_modifiers "const" @keyword.function)
-(function_modifiers (extern_modifier "extern" @keyword.function))
+(function_modifiers "async" @keyword.coroutine)
+(function_modifiers "const" @keyword)
+(function_modifiers (extern_modifier "extern" @keyword))
 
 (parameters ["(" ")"] @punctuation.bracket)
 (parameters "," @punctuation.delimiter)
@@ -385,17 +393,17 @@
   pattern: (identifier) @variable)
 
 (parameter
-  pattern: (identifier) @parameter)
+  pattern: (identifier) @variable.parameter)
 
 (parameter
   ":" @punctuation.delimiter)
 
 ((field_expression
-  field: (field_identifier) @field) @_member
+  field: (field_identifier) @variable.member) @_member
  (#not-has-parent? @_member call_expression))
 
 (field_expression
-  field: (integer_literal) @field)
+  field: (integer_literal) @variable.member)
 
 (field_initializer_list
   "{" @punctuation.bracket
@@ -406,10 +414,10 @@
   ".." @punctuation.delimiter)
 
 (field_initializer
-  (field_identifier) @field
+  (field_identifier) @variable.member
   ":" @punctuation.delimiter)
 
-(shorthand_field_initializer (identifier) @field) ; TODO increase priority or move lower
+(shorthand_field_initializer (identifier) @variable.member) ; TODO increase priority or move lower
 
 ((self) @variable.builtin
         (#not-has-parent? @variable.builtin scoped_identifier scoped_type_identifier use_list))
@@ -511,7 +519,7 @@
   "if" @conditional)
 
 (negative_literal "-" @number (integer_literal))
-(negative_literal "-" @float (float_literal))
+(negative_literal "-" @number.float (float_literal))
 
 ; Function calls
 
@@ -524,7 +532,7 @@
 
 (call_expression
   function: (field_expression
-    field: (field_identifier) @method.call))
+    field: (field_identifier) @function.method.call))
 
 (generic_function
   function: (identifier) @function.call)
@@ -535,7 +543,7 @@
 
 (generic_function
   function: (field_expression
-    field: (field_identifier) @method.call))
+    field: (field_identifier) @function.method.call))
 
 (arguments ["(" ")"] @punctuation.bracket)
 (arguments "," @punctuation.delimiter)
@@ -571,7 +579,7 @@
 
 (unary_expression "-" @number (integer_literal))
 
-(unary_expression "-" @float (float_literal))
+(unary_expression "-" @number.float (float_literal))
 
 (try_expression "?" @operator)
 
@@ -582,47 +590,28 @@
 
 ;;;; Statements
 
-(if_expression "if" @conditional)
-(else_clause "else" @conditional)
-(match_expression "match" @conditional)
+(if_expression "if" @keyword.conditional)
+(else_clause "else" @keyword.conditional)
+(match_expression "match" @keyword.conditional)
 
-(while_expression "while" @repeat)
-(for_expression "for" @repeat "in" @repeat)
-(loop_expression "loop" @repeat)
-(break_expression "break" @repeat)
-(continue_expression "continue" @repeat)
+(while_expression "while" @keyword.repeat)
+(for_expression "for" @keyword.repeat "in" @keyword.repeat)
+(loop_expression "loop" @keyword.repeat)
+(break_expression "break" @keyword.repeat)
+(continue_expression "continue" @keyword.repeat)
 
-(try_block "try" @keyword)
+(try_block "try" @keyword.exception)
 
 
 ;;;; Comments
 
-((line_comment) @comment
-  (#lua-match? @comment "^//[^/!]"))
-
-((line_comment) @comment
-  (#lua-match? @comment "^//$"))
-
-((line_comment) @comment
-  (#lua-match? @comment "^////"))
-
-((line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///[^/]"))
-
-((line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///$"))
-
-((line_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^//!"))
-
+(line_comment) @comment
 (block_comment) @comment
 
-((block_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$"))
-
-((block_comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][!]"))
-
+(line_comment
+  (doc_comment) @spell) @comment.documentation
+(block_comment
+  (doc_comment) @spell) @comment.documentation
 
 
 
@@ -630,7 +619,7 @@
 
 (boolean_literal) @boolean
 (integer_literal) @number
-(float_literal) @float
+(float_literal) @number.float
 (raw_string_literal) @string
 (string_literal) @string
 (escape_sequence) @string.escape
@@ -653,18 +642,15 @@
 
 
 
-
-
-
 ;;;; Attributes
 
 (inner_attribute_item ["#" "!" "[" "]"] @attribute.delimiter)
 (attribute_item ["#" "[" "]"] @attribute.delimiter)
 
-((attribute) @attribute (#set! priority 110))
+(attribute) @attribute
 
 (attribute
-  arguments: (token_tree ["(" "," ")"] @attribute.delimiter))
+  arguments: (token_tree ["(" "," ")" "=" "[" "]"] @attribute.delimiter))
 
 
 ; TODO:

@@ -2,7 +2,6 @@
 -- if vim.o.background == "dark" then
 -- end
 
-
 vim.g.colors_name = "phoenix"
 
 local function h(group, settings)
@@ -216,8 +215,11 @@ h("@character.special", {link = "@string.special"})
 h("@string", {fg = palette.fawn})
 h("@string.escape", {fg = palette.sunset, bold = true})
 h("@string.special", {fg = palette.orange_peel})
+h("@string.special.symbol", {fg = palette.orange_peel})
+h("@string.special.path", {underline = true})
+h("@string.special.url", {underline = true})
 h("@number", {fg = palette.mauve})
-h("@float", {fg = palette.mauve})
+h("@number.float", {fg = palette.mauve})
 
 -- Constant Identifiers
 h("@constant", {fg = palette.periwinkle})
@@ -228,19 +230,21 @@ h("@constant.parameter", {fg = palette.periwinkle, italic = true})
 -- Variable Identifiers
 h("@variable", {fg = foreground})
 h("@variable.builtin", {fg = foreground, bold = true})
-h("@parameter", {fg = foreground, italic = true})
-h("@field", {fg = palette.ice})
-h("@property", {link = "@field"})
-h("@namespace", {fg = palette.sky})
-h("@namespace.builtin", {fg = palette.sky, bold = true})
+h("@variable.parameter", {fg = foreground, italic = true})
+h("@variable.member", {fg = palette.ice})
+
+h("@property", {fg = palette.robin_egg})
+
+h("@module", {fg = palette.sky})
+h("@module.builtin", {fg = palette.sky, bold = true})
 
 -- Callable Identifiers
 h("@function", {fg = palette.sky})
 h("@function.call", {link = "@function"})
-h("@function.builtin", {fg = palette.sky, bold = true})
+h("@function.builtin", {fg = palette.sky, italic = true})
 h("@function.macro", {fg = palette.beaver, italic = true})
-h("@method", {fg = palette.sky})
-h("@method.call", {link = "@method"})
+h("@function.method", {fg = palette.sky})
+h("@function.method.call", {link = "@function.method"})
 h("@constructor", {fg = palette.vista})
 
 -- Type Identifiers
@@ -258,16 +262,20 @@ h("@type.parameter", {fg = palette.pistachio, italic = true})
 h("@interface", {link = "@type.interface"})
 
 h("@attribute", {fg = accent.viridian})
+h("@attribute.builtin", {fg = accent.viridian})
 -- "@preproc"
 -- "@define"
 h("@macro", {})
 
-h("@comment", {fg = gray[8], italic = true})
-h("@comment.documentation", {fg = gray[6], nocombine = true})
+h("@comment", {fg = gray[5], italic = true})
+h("@comment.documentation", {fg = gray[9], nocombine = true})
+h("@comment.error", {fg = terminal.dim.red})
+h("@comment.warning", {fg = terminal.dim.yellow})
+h("@comment.todo", {fg = terminal.dim.violet})
+h("@comment.note", {fg = terminal.dim.azure})
 
 h("@storageclass", {link = "@type.qualifier"})
 h("@storageclass.lifetime", {fg = palette.orange_peel, italic = true})
-
 
 h("@punctuation", {fg = palette.gray})
 -- "@punctuation.bracket"
@@ -276,17 +284,28 @@ h("@punctuation", {fg = palette.gray})
 
 
 h("@keyword", {fg = palette.vista})
+h("@keyword.coroutine", {link = "@keyword"})
+h("@keyword.function", {link = "@keyword"})
 h("@keyword.operator", {link = "@keyword"})
-h("@conditional", {link = "@keyword"})
-h("@repeat", {link = "@keyword"})
-h("@exception", {link = "@keyword"})
-h("@include", {link = "@keyword"})
+h("@keyword.import", {link = "@keyword"})
+h("@keyword.type", {link = "@keyword"})
+h("@keyword.modifier", {link = "@keyword"})
+h("@keyword.repeat", {link = "@keyword"})
+h("@keyword.return", {link = "@keyword"})
+h("@keyword.debug", {link = "@keyword"})
+h("@keyword.exception", {link = "@keyword"})
+h("@keyword.conditional", {link = "@keyword"})
+h("@keyword.conditional.ternary", {link = "@keyword"})
+h("@keyword.directive", {link = "@keyword"})
+h("@keyword.directive.definition", {link = "@keyword"})
+
 
 h("@label", {fg = palette.jasper})
 
 h("@operator", {fg = palette.powder_blue})
 
 h("@tag", {fg = palette.jasper})
+h("@tag.builtin", {fg = palette.jasper, bold = true})
 h("@tag.attribute", {fg = palette.tangerine})
 h("@tag.delimiter", {fg = palette.powder_blue})
 
@@ -302,16 +321,16 @@ h("Boolean", {link = "@boolean"})
 h("Character", {link = "@character"})
 h("String", {link = "@string"})
 h("Number", {link = "@number"})
-h("Float", {link = "@float"})
+h("Float", {link = "@number.float"})
 
 h("Identifier", {link = "@variable"})
 h("Function", {link = "@function"})
 
 h("Statement", {link = "keyword"})
 h("Keyword", {link = "@keyword"})
-h("Conditional", {link = "@conditional"})
-h("Repeat", {link = "@repeat"})
-h("Exception", {link = "@exception"})
+h("Conditional", {link = "@keyword.conditional"})
+h("Repeat", {link = "@keyword.repeat"})
+h("Exception", {link = "@keyword.exception"})
 h("Label", {link = "@label"})
 h("Operator", {link = "@operator"})
 
@@ -340,11 +359,6 @@ h("SpecialKey", {fg = accent.prussian})
 h("MatchParen", {fg = terminal.bright.white, bold = true})
 
 
-h("Error", {fg = terminal.normal.blush})
-h("Todo", {link = "@text.todo"})
-h("Underline", {link = "@text.underline"})
-h("Title", {link = "@text.title"})
-
 
 
 
@@ -353,7 +367,7 @@ h("@lsp.type.keyword", {link = "@keyword"})
 h("@lsp.type.operator", {link = "@operator"})
 h("@lsp.type.macro", {link = "@function.macro"})
 h("@lsp.type.function", {link = "@function"})
-h("@lsp.type.method", {link = "@method"})
+h("@lsp.type.method", {link = "@function.method"})
 h("@lsp.type.constParameter", {link = "@constant.parameter"})
 h("@lsp.type.typeParameter", {link = "@type.parameter"})
 h("@lsp.type.typeAlias", {link = "@type.definition"})
@@ -363,42 +377,43 @@ h("@lsp.type.struct", {link = "@type.struct"})
 h("@lsp.type.enum", {link = "@type.enum"})
 h("@lsp.type.enumMember", {link = "@type.enum.variant"})
 h("@lsp.type.interface", {link = "@type.interface"})
-h("@lsp.type.namespace", {link = "@namespace"})
+h("@lsp.type.namespace", {link = "@module"})
 h("@lsp.type.variable", {link = "@variable"})
-h("@lsp.type.parameter", {link = "@parameter"})
-h("@lsp.type.property", {link = "@field"})
+h("@lsp.type.parameter", {link = "@variable.parameter"})
+h("@lsp.type.property", {link = "@variable.member"})
 
 h("@lsp.type.string", {link = "@string"})
 h("@lsp.type.character", {link = "@character"})
 h("@lsp.type.number", {link = "@number"})
-h("@lsp.type.float", {link = "@float"})
+h("@lsp.type.float", {link = "@number.float"})
 h("@lsp.type.boolean", {link = "@boolean"})
 
 h("@lsp.type.comment", {link = "@lsp"})
 h("@lsp.type.punctuation", {link = "@punctuation"})
 
-h("@lsp.mod.attribute", {link = "@attribute"})
 h("@lsp.mod.documentation", {link = "@comment.documentation"})
+h("@lsp.mod.attribute", {link = "@lsp"})
 
 h("@lsp.typemod.variable.static", {link = "@constant"})
-h("@lsp.typemod.keyword.crateRoot", {link = "@namespace.builtin"})
+h("@lsp.typemod.keyword.crateRoot", {link = "@module.builtin"})
 
 h("@lsp.typemod.arithmetic.injected", {link = "@operator"})
 h("@lsp.typemod.bitwise.injected", {link = "@operator"})
 h("@lsp.typemod.logical.injected", {link = "@operator"})
 h("@lsp.typemod.comparison.injected", {link = "@operator"})
 
-h("@lsp.type.unresolvedReference", {strikethrough = true, sp = palette.gray})
+h("@lsp.type.unresolvedReference", {undercurl = true, sp = palette.gray})
 
 
 h("LineNr", {fg = gray[4]})
 h("NonText", {fg = gray[4]})
 h("EndOfBuffer", {fg = gray[4]})
+h("CursorLineNr", {fg = gray[4]})
 
 h("Conceal", {fg = gray[4]})
 -- highlight("Whitespace")
 
-h("Folded", {fg = gray[4]})
+h("Folded", {fg = gray[9]})
 h("FoldColumn", {link = "LineNr"})
 
 h("IncSearch", {fg = terminal.bright.yellow, bg = terminal.dim.yellow, bold = true})
@@ -421,14 +436,21 @@ h("NormalFloat", {bg = terminal.normal.black})
 
 -- highlight("MsgArea", {bg = background})
 -- highlight("MsgSeparator", {fg = extra.blush, bg = bright.blue})
--- highlight("ModeMsg", {fg = extra.blush})
--- highlight("MoreMsg", {fg = normal.chartreuse})
-
--- highlight("Question", {fg = normal.chartreuse})
 
 
-h("ErrorMsg", {link = "DiagnosticError"})
-h("WarningMsg", {link = "DiagnosticWarn"})
+
+h("Question", {fg = terminal.normal.chartreuse})
+h("MoreMsg", {fg = terminal.normal.chartreuse})
+h("ModeMsg", {fg = dim_foreground})
+h("ErrorMsg", {fg = terminal.normal.red})
+h("WarningMsg", {fg = terminal.normal.yellow})
+
+h("Error", {fg = palette.blush})
+h("Todo", {fg = palette.maize})
+h("Underline", {underline = true})
+h("Title", {fg = palette.cerise, bold = true})
+
+
 
 
 h("DiagnosticError", {fg = terminal.normal.red})
@@ -439,37 +461,47 @@ h("DiagnosticOk", {fg = terminal.normal.green})
 h("DiagnosticUnnecessary", {})
 
 
-h("@text", {fg = foreground})
-h("@text.title", {fg = palette.cerise, bold = true})
+-- Markup
 
-h("@text.title.1", {fg = heading_shades[1]})
-h("@text.title.1.marker", {fg = palette.gray})
-h("@text.title.2", {fg = heading_shades[2]})
-h("@text.title.2.marker", {fg = palette.gray})
-h("@text.title.3", {fg = heading_shades[3]})
-h("@text.title.3.marker", {fg = palette.gray})
-h("@text.title.4", {fg = heading_shades[4]})
-h("@text.title.4.marker", {fg = palette.gray})
-h("@text.title.5", {fg = heading_shades[5]})
-h("@text.title.5.marker", {fg = palette.gray})
-h("@text.title.6", {fg = heading_shades[6]})
-h("@text.title.6.marker", {fg = palette.gray})
+h("@markup.heading", {fg = palette.cerise, bold = true})
+h("@markup.heading.1", {fg = heading_shades[1]})
+h("@markup.heading.2", {fg = heading_shades[2]})
+h("@markup.heading.3", {fg = heading_shades[3]})
+h("@markup.heading.4", {fg = heading_shades[4]})
+h("@markup.heading.5", {fg = heading_shades[5]})
+h("@markup.heading.6", {fg = heading_shades[6]})
 
-h("@text.literal", {fg = palette.powder_blue})
-h("@text.math", {fg = foreground})
-h("@text.uri", {fg = palette.sky, underline = true})
-h("@text.reference", {fg = palette.pistachio})
+h("@markup.italic", {italic = true})
+h("@markup.bold", {bold = true})
+h("@markup.emphasis", {link = "@markup.italic"})
+h("@markup.strong", {link = "@markup.bold"})
+h("@markup.strikethrough", {strikethrough = true})
+h("@markup.underline", {underline = true})
 
-h("@text.emphasis", {italic = true})
-h("@text.strong", {bold = true})
-h("@text.strike", {strikethrough = true})
-h("@text.underline", {underline = true})
+h("@markup.link", {fg = palette.pistachio, underline = true})
+h("@markup.link.url", {fg = palette.sky, underline = true})
+h("@markup.link.label", {fg = palette.pistachio})
 
-h("@text.todo", {fg = palette.fawn})
-h("@text.note", {fg = palette.powder_blue})
-h("@text.warning", {fg = terminal.normal.yellow})
-h("@text.danger", {fg = terminal.normal.red})
+h("@markup.raw", {fg = palette.powder_blue})
+h("@markup.raw.block", {fg = palette.powder_blue})
 
+h("@markup.quote", {fg = foreground})
+h("@markup.math", {fg = foreground})
+
+h("@markup.list", {fg = palette.gray})
+h("@markup.list.checked", {fg = palette.gray})
+h("@markup.list.unchecked", {fg = palette.gray})
+
+
+-- h("@text.todo", {fg = palette.fawn})
+-- h("@text.note", {fg = palette.powder_blue})
+-- h("@text.warning", {fg = terminal.normal.yellow})
+-- h("@text.danger", {fg = terminal.normal.red})
+
+
+h("@diff.plus", {fg = terminal.normal.green})
+h("@diff.minus", {fg = terminal.normal.red})
+h("@diff.delta", {fg = terminal.bright.blue})
 
 h("DiffAdd", {fg = terminal.normal.green, bg = gray[2]})
 h("DiffDelete", {fg = terminal.normal.red})
@@ -477,9 +509,14 @@ h("DiffChange", {})
 h("DiffText", {fg = terminal.bright.blue, bg = gray[2]})
 
 h("diffAdded", {fg = terminal.normal.green})
-h("diffChanged", {fg = terminal.bright.blue})
 h("diffRemoved", {fg = terminal.normal.red})
-h("diffLine", {italic = true})
+h("diffChanged", {fg = terminal.bright.blue})
+h("diffBDiffer", {fg = foreground})
+h("diffLine", {fg = terminal.normal.cyan})
+h("diffIndexLine", {bold = true})
+h("diffFile", {bold = true})
+h("diffOldFile", {bold = true})
+h("diffNewFile", {bold = true})
 
 
 h("Directory", {fg = terminal.normal.blue})
@@ -517,4 +554,14 @@ h("healthWarning", {fg = terminal.normal.yellow})
 h("TSDefinitionUsage", {underline = true, sp = palette.tangerine})
 h("TSDefinition", {underline = true, sp = palette.tangerine})
 h("TSCurrentScope", {bg = accent.inset_bg})
+
+
+-- new ts groups:
+
+
+-- "@string.documentation" --   string documenting code (e.g. Python docstrings)
+-- "@string.regexp" --          regular expressions
+
+
+-- "@markup.environment" --     environments (e.g. in LaTeX)
 

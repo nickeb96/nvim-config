@@ -19,6 +19,7 @@ setlocal concealcursor=n
 setlocal conceallevel=2
 
 setlocal spell
+setlocal spellcapcheck=
 
 noremap <buffer> <silent> k gk
 noremap <buffer> <silent> j gj

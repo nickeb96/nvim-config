@@ -7,10 +7,12 @@ setlocal matchpairs+=<:>
 setlocal commentstring=//\ %s
 setlocal comments=b://!,b:///,O://
 
-setlocal suffixesadd=.rs
 setlocal include=^\s*use
 setlocal includeexpr=v:lua._rust_include_expr()
 setlocal isfname=@,48-57,_,:
+setlocal suffixesadd=.rs
+
+compiler cargo
 
 lua <<EOF
 function _rust_include_expr()
@@ -57,5 +59,5 @@ endfunction
 setlocal fillchars=fold:\ 
 setlocal foldtext=s:CommentFoldText()
 setlocal foldmethod=expr
-setlocal foldexpr=nvim_treesitter#foldexpr()
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 

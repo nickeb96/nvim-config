@@ -9,14 +9,31 @@ async/SM
 mutex/SM
 struct/SM
 
-respawn/MDG
+segfault/SMDG
+
+preprocess/DG
+preprocessor/SM
+
+coroutine/SM
+
+namespace/SM
+
+respawn/SMDG
 
 executable/SM
 builtin/SM
 
 autocomplete/GNXDRS
 
+comparator/SM
+
 customizable
+
+dataset/SM
+
+lidar
+
+detection/SM
 
 parser/SM
 
@@ -27,6 +44,8 @@ bool/SM
 whitespace/SM
 
 compose/B
+
+interop/M
 
 abc
 xyz
@@ -109,6 +128,7 @@ CMY
 CMYK
 ABI
 EOF
+DHCP
 
 Palantir
 

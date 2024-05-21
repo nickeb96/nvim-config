@@ -68,9 +68,6 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 " treesitter based auto pairs
 Plug 'windwp/nvim-autopairs'
 
-" treesitter highlight nvim under cursor
-Plug 'nvim-treesitter/playground'
-
 " treesitter identifier definition highlighting
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
 
@@ -88,11 +85,19 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lua'
 
 " snippets
-Plug 'L3MON4D3/LuaSnip'
+" Plug 'L3MON4D3/LuaSnip'
 
 " lsp zero
-Plug 'VonHeikemen/lsp-zero.nvim', { 'branch': 'v1.x' }
+" Plug 'VonHeikemen/lsp-zero.nvim', { 'branch': 'v1.x' }
 
 " inline hexcolor display
 Plug 'norcalli/nvim-colorizer.lua'
+
+" fuzzy finder
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope-fzy-native.nvim'
+" Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
+
+" romaji to hirigana
+Plug 'vim-skk/eskk.vim'
 

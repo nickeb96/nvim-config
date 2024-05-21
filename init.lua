@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd({"VimResume"}, {
   pattern = "*",
   group = "set_cursor_shape",
   command = "set guicursor&",
-  })
+})
 
 -- Enable syntax based folding
 vim.opt.foldmethod = "expr"
@@ -58,6 +58,9 @@ vim.api.nvim_create_autocmd({"TextYankPost"}, {
   end,
 })
 
+-- Abbreviate lua= as L
+vim.cmd.cabbrev("L", "lua=")
+
 -- Limit filenames for gf, gF, etc.
 vim.opt.isfname = "@,48-57,-,_,.,/,$,~"
 
@@ -82,9 +85,18 @@ vim.keymap.set({"n", "v"}, "?", function()
   vim.cmd.echon("''")
 end)
 
--- Use hybrid relative/absolute line numbers
-vim.opt.relativenumber = true
-vim.opt.number = true
+-- Use hybrid relative/absolute line numbers when the terminal is wide enough
+if vim.opt.columns:get() >= 84 then
+  vim.opt.relativenumber = true
+  vim.opt.number = true
+  vim.api.nvim_create_augroup("disable_relativenumber_in_term", { clear = true })
+  vim.api.nvim_create_autocmd({"TermOpen"}, {
+    pattern = "*",
+    group = "disable_relativenumber_in_term",
+    command = "set norelativenumber",
+  })
+end
+
 
 -- Toggle tab completion in plugin/lspconfig.lua
 vim.keymap.set({"n"}, "g<Tab>", function()
@@ -115,6 +127,9 @@ vim.opt.backupcopy = "yes"
 -- Use fish as the internal shell
 vim.opt.shell = "fish"
 
+-- Only pipe stdout from external commands with `!` prefix
+vim.opt.shellredir = ">%s"
+
 -- Turn off auto scrolling in markdown preview
 vim.g.mkdp_preview_options = { disable_sync_scroll = 1 }
 
@@ -134,6 +149,9 @@ vim.opt.spellcapcheck = "[.?!] \\{2}"
 
 -- Disable line wrapping all together
 vim.opt.wrap = false
+
+-- Set characters to break after
+vim.opt.breakat = "\t !*-+;:=,./?|"
 
 -- Disable .netrwhist files from being generated
 vim.g.netrw_dirhistmax = 0
@@ -155,6 +173,7 @@ vim.opt.listchars = {
   eol = "\u{21B5}",
   tab = "\u{2504}\u{2504}\u{2524}",
   space = "\u{2022}",
+  leadmultispace = "\u{2027}\u{2027}\u{2027}\u{2022}",
   nbsp = "\u{25a0}",
   trail = "\u{2593}",
   extends = "\u{2192}",
@@ -167,6 +186,7 @@ vim.opt.fileformat = "unix"
 
 -- Disable nroff directives for paragraph motions
 vim.opt.paragraphs = ""
+vim.opt.sections = ""
 
 -- Expand tabs to spaces
 vim.opt.expandtab = true
@@ -180,24 +200,35 @@ vim.opt.shiftwidth = 0
 -- Use 'shiftwidth' for virtual tab width
 vim.opt.softtabstop = -1
 
+-- Round <, > shift to nearest mustiple of shiftwidth
+vim.opt.shiftround = true
 
-local current_bg = vim.uv.fs_readlink(vim.env.HOME.."/.config/alacritty/colors/current.toml")
-if current_bg == "light.toml" then
-    vim.opt.background = "light"
-elseif current_bg == "dark.toml" then
-    vim.opt.background = "dark"
+
+local _, current_bg = pcall(function()
+  return vim.uv.fs_readlink(vim.env.HOME.."/.config/alacritty/colors/current.toml")
+end)
+if current_bg == "dark.toml" then
+  vim.opt.background = "dark"
+elseif current_bg == "light.toml" then
+  vim.opt.background = "light"
 end
-
 
 vim.cmd.colorscheme "phoenix"
 
+
 if vim.g.neovide then
-  vim.opt.guifont = "SauceCodePro Nerd Font"
+  vim.opt.guifont = "SauceCodePro Nerd Font:h16"
   vim.g.neovide_input_macos_alt_is_meta = false
   vim.g.neovide_cursor_animate_command_line = false
+  vim.g.neovide_remember_window_size = true
+  vim.g.neovide_remember_window_position = true
+  vim.g.neovide_input_macos_alt_is_meta = true
   vim.keymap.set("v", "<D-c>", '"+y') -- Copy
   vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
   vim.keymap.set("c", "<D-v>", '<C-R>+') -- Paste command mode
   vim.keymap.set("i", "<D-v>", '<C-o>"+P') -- Paste insert mode
+  vim.defer_fn(function()
+    vim.cmd "NeovideFocus"
+  end, 100)
 end
 
