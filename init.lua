@@ -43,7 +43,7 @@ vim.opt.signcolumn = "no"
 -- Remember cursor position from last session
 vim.api.nvim_create_augroup("remember_cursor_position", { clear = true })
 vim.api.nvim_create_autocmd({"BufReadPost"}, {
-  pattern = {"*.rs", "*.py", "*.lua", "*.scm", "*.html", "*.css", "*.js"},
+  pattern = {"*.rs", "*.py", "*.lua", "*.scm", "*.html", "*.css", "*.js", "*.pdf"},
   group = "remember_cursor_position",
   callback = function()
     vim.cmd [[ if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]]
@@ -173,7 +173,7 @@ vim.opt.listchars = {
   eol = "\u{21B5}",
   tab = "\u{2504}\u{2504}\u{2524}",
   space = "\u{2022}",
-  leadmultispace = "\u{2027}\u{2027}\u{2027}\u{2022}",
+  leadmultispace = "\u{2027}\u{2027}\u{2027}\u{25e6}",
   nbsp = "\u{25a0}",
   trail = "\u{2593}",
   extends = "\u{2192}",
@@ -204,14 +204,14 @@ vim.opt.softtabstop = -1
 vim.opt.shiftround = true
 
 
-local _, current_bg = pcall(function()
-  return vim.uv.fs_readlink(vim.env.HOME.."/.config/alacritty/colors/current.toml")
-end)
-if current_bg == "dark.toml" then
-  vim.opt.background = "dark"
-elseif current_bg == "light.toml" then
-  vim.opt.background = "light"
-end
+-- local _, current_bg = pcall(function()
+--   return vim.uv.fs_readlink(vim.env.HOME.."/.config/alacritty/colors/current.toml")
+-- end)
+-- if current_bg == "dark.toml" then
+--   vim.opt.background = "dark"
+-- elseif current_bg == "light.toml" then
+--   vim.opt.background = "light"
+-- end
 
 vim.cmd.colorscheme "phoenix"
 

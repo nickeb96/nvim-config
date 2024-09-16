@@ -92,11 +92,10 @@ end
 
 
 local function make_a_server()
-  local uv = vim.loop
-  local server = uv.new_tcp()
+  local server = vim.uv.new_tcp()
   server:bind("127.0.0.1", PORT)
   server:listen(128, function (error)
-    local client = uv.new_tcp()
+    local client = vim.uv.new_tcp()
     server:accept(client)
     client:read_start(vim.schedule_wrap(function (error, chunk)
       if error then

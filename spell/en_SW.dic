@@ -1,5 +1,9 @@
 0
 
+WD-40
+nvim
+vimrc
+
 ok
 todo
 arg/SM
@@ -8,6 +12,8 @@ config/SM
 async/SM
 mutex/SM
 struct/SM
+
+quaternion/SM
 
 segfault/SMDG
 
@@ -31,7 +37,7 @@ customizable
 
 dataset/SM
 
-lidar
+lidar/SM
 
 detection/SM
 

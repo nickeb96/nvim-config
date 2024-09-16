@@ -9,7 +9,7 @@ setlocal comments=b://!,b:///,O://
 
 setlocal include=^\s*use
 setlocal includeexpr=v:lua._rust_include_expr()
-setlocal isfname=@,48-57,_,:
+setlocal isfname=@,48-57,_,:,/
 setlocal suffixesadd=.rs
 
 compiler cargo

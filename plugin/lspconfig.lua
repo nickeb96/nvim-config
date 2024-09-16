@@ -89,14 +89,67 @@ lspconfig.rust_analyzer.setup({
     }
   }
 })
+lspconfig.basedpyright.setup({
+  capabilities = default_capabilities,
+  settings = {
+    basedpyright = {
+      analysis = {
+        diagnosticSeverityOverrides = {
+          reportMissingTypeStubs = false,
+          reportAny = false,
+          reportUnusedCallResult = false,
+          reportUnusedImport = false,
+          reportInconsistentOverload = false,
+          reportMissingTypeArgument = false,
+          reportMissingParameterType = false,
+          reportUnusedParameter = false,
+          reportUnknownArgumentType = false,
+          reportUnknownLambdaType = false,
+          reportUnknownMemberType = false,
+          reportUnknownParameterType = false,
+          reportUnknownVariableType = false,
+          reportDeprecated = false,
+          reportImplicitOverride = false,
+        }
+      }
+    }
+  }
+})
 lspconfig.lua_ls.setup({
   capabilities = default_capabilities,
 })
-lspconfig.pyright.setup({
+lspconfig.ts_ls.setup({
   capabilities = default_capabilities,
 })
 lspconfig.cssls.setup({
   capabilities = default_capabilities,
+})
+lspconfig.clangd.setup({
+  capabilities = default_capabilities,
+})
+lspconfig.harper_ls.setup({
+  capabilities = default_capabilities,
+  settings = {
+    ["harper-ls"] = {
+      linters = {
+        spell_check = false,
+        spelled_numbers = false,
+        an_a = true,
+        sentence_capitalization = false,
+        unclosed_quotes = true,
+        wrong_quotes = false,
+        long_sentences = true,
+        repeated_words = true,
+        spaces = false,
+        matcher = true,
+        correct_number_suffix = true,
+        number_suffix_capitalization = true,
+        multiple_sequential_pronouns = true,
+        linking_verbs = false,
+        avoid_curses = true,
+      }
+    }
+  }
 })
 
 
@@ -120,6 +173,7 @@ vim.diagnostic.config {
 vim.keymap.set("n", "gl", vim.diagnostic.open_float)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<C-s>", vim.lsp.buf.code_action)
 
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP actions",

@@ -34,7 +34,7 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'tpope/vim-surround'
 
 " adds gc operator for commenting
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
 
 " adds cr operator for coercing between snake_cases, PascalCase, etc.
 Plug 'tpope/vim-abolish'
@@ -94,10 +94,13 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " fuzzy finder
-" Plug 'nvim-lua/plenary.nvim'
+ "Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope-fzy-native.nvim'
 " Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 
 " romaji to hirigana
 Plug 'vim-skk/eskk.vim'
+
+" quicklist for todo
+Plug 'folke/todo-comments.nvim'
 

@@ -147,6 +147,10 @@
 (use_list
   [(super) (self)] @module.builtin)
 
+; use ...::{..., *};
+(use_list
+  (use_wildcard "*" @keyword.import))
+
 (use_list
   "{" @punctuation.bracket
   ","? @punctuation.delimiter
@@ -587,6 +591,8 @@
 
 (type_cast_expression "as" @keyword.operator)
 
+(index_expression ["[" "]"] @punctuation.bracket)
+
 
 ;;;; Statements
 
@@ -612,7 +618,6 @@
   (doc_comment) @spell) @comment.documentation
 (block_comment
   (doc_comment) @spell) @comment.documentation
-
 
 
 ;;;; Literals

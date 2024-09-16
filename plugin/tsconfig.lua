@@ -11,10 +11,9 @@ require("nvim-treesitter.configs").setup {
   -- A list of parser names, or "all"
   ensure_installed = {
     "rust", "lua", "regex", "comment", "markdown", "markdown_inline", "latex",
-    "python", "html", "css", "javascript", "toml", "query", "vim", "vimdoc",
-    "bash", "c"
+    "python", "html", "htmldjango", "css", "javascript", "typescript", "toml",
+    "query", "vim", "vimdoc", "bash", "c"
   },
-  -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
   highlight = {
     enable = true,
@@ -35,13 +34,8 @@ require("nvim-treesitter.configs").setup {
     },
     smart_rename = {
       enable = true,
-      -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
-      -- keymaps = {
-      --   smart_rename = "grr",
-      -- },
     },
   },
-  -- fold = { "rust", "markdown" },
   fold = {
     enable = true,
   },

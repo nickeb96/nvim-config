@@ -1,16 +1,123 @@
 
--- if vim.o.background == "dark" then
--- end
-
 vim.g.colors_name = "phoenix"
 
 local function h(group, settings)
   vim.api.nvim_set_hl(0, group, settings)
 end
 
+local dark_colors = {
+  primary = {
+    foreground = "#ffe7d9",
+    background = "#12171d",
+    dim_foreground = "#b1978a",
+  },
+  dim = {
+    black = "#000000",
+    white = "#828c99",
+    red = "#d14955",
+    orange = "#d57950",
+    yellow = "#d9a94a",
+    chartreuse = "#a49d56",
+    green = "#6e9161",
+    spring = "#4a9692",
+    cyan = "#259bc2",
+    azure = "#4490d7",
+    blue = "#6385eb",
+    violet = "#7073d7",
+    magenta = "#7d61c2",
+    rose = "#a7558c",
+  },
+  normal = {
+    black = "#2c2f33",
+    white = "#ede3d6",
+    red = "#ff5a55",
+    orange = "#fea269",
+    yellow = "#fce97d",
+    chartreuse = "#d4ea87",
+    green = "#abeb91",
+    spring = "#6edfb2",
+    cyan = "#31d3d3",
+    azure = "#5acae9",
+    blue = "#82c1ff",
+    violet = "#9b8bfb",
+    magenta = "#b354f7",
+    rose = "#d957a6",
+  },
+  bright = {
+    black = "#4c555e",
+    white = "#ffffff",
+    red = "#ff9794",
+    orange = "#ffcba5",
+    yellow = "#ffffb5",
+    chartreuse = "#e4f3ba",
+    green = "#c9e6be",
+    spring = "#b9e9d5",
+    cyan = "#a9ebeb",
+    azure = "#b2e4f5",
+    blue = "#baddff",
+    violet = "#dbc2f1",
+    magenta = "#fca7e3",
+    rose = "#fe9fbc",
+  },
+}
+
+local light_colors = {
+  primary = {
+    foreground = "#12171d",
+    background = "#ffe7d9",
+    dim_foreground = "#9c8273",
+  },
+  dim = {
+    black = "#ffffff",
+    white = "#6e7175",
+    red = "#ff5a55",
+    orange = "#f79851",
+    yellow = "#edcc13",
+    chartreuse = "#cde16f",
+    green = "#abeb91",
+    spring = "#6edfb2",
+    cyan = "#31d3d3",
+    azure = "#5acae9",
+    blue = "#82c1ff",
+    violet = "#9b8bfb",
+    magenta = "#b354f7",
+    rose = "#d957a6",
+  },
+  normal = {
+    black = "#dfe4eb",
+    white = "#41464d",
+    red = "#d14955",
+    orange = "#d57950",
+    yellow = "#d9a94a",
+    chartreuse = "#a49d56",
+    green = "#6e9161",
+    spring = "#4a9692",
+    cyan = "#259bc2",
+    azure = "#4490d7",
+    blue = "#6385eb",
+    violet = "#7073d7",
+    magenta = "#7d61c2",
+    rose = "#a7558c",
+  },
+  bright = {
+    black = "#9ca0a6",
+    white = "#000000",
+    red = "#9c0b06",
+    orange = "#a14b06",
+    yellow = "#a68b05",
+    chartreuse = "#657d08",
+    green = "#246e0b",
+    spring = "#146947",
+    cyan = "#046382",
+    azure = "#064da1",
+    blue = "#0836bf",
+    violet = "#242ba8",
+    magenta = "#3f1f91",
+    rose = "#6e154c",
+  },
+}
 
 -- color names came from: https://coolors.co
-
 local palette = {
   blush =         "#E7688C",
   rose =          "#E9819E",
@@ -37,6 +144,7 @@ local palette = {
   periwinkle =    "#E3DBFF", -- constants
 
   ice =           "#C6EBF5",
+  black_ice =     "#869BA5",
 
   bright_white =  "#FFFFFF",
 
@@ -71,6 +179,19 @@ local palette = {
   -- type = "#7EA16B",
 }
 
+
+local terminal = {}
+
+if vim.o.background == "dark" then
+  terminal = dark_colors
+elseif vim.o.background == "light" then
+  terminal = light_colors
+  palette.ice = palette.black_ice
+else
+  error("failed to detect terminal background color")
+end
+
+
 local accent = {
   viridian =      "#478978",
   viridian2 =     "#619084",
@@ -90,9 +211,9 @@ local heading_shades = {
 }
 
 
-local foreground = "#FFE7D9"
-local background = "#12171d"
-local dim_foreground = "#b1978a"
+local foreground = terminal.primary.foreground
+local background = terminal.primary.background
+local dim_foreground = terminal.primary.dim_foreground
 
 local very_dim_foreground = "#735b4f"
 
@@ -146,57 +267,6 @@ local gray = {
   "#757f8b",
   "#7c8692",
   "#828c99",
-}
-
-local terminal = {
-  dim = {
-    black = "#000000",
-    white = "#828c99",
-    red = "#d14955",
-    orange = "#d57950",
-    yellow = "#d9a94a",
-    chartreuse = "#a49d56",
-    green = "#6e9161",
-    spring = "#4a9692",
-    cyan = "#259bc2",
-    azure = "#4490d7",
-    blue = "#6385eb",
-    violet = "#7073d7",
-    magenta = "#7d61c2",
-    rose = "#a7558c",
-  },
-  normal = {
-    black = "#2c2f33",
-    white = "#ede3d6",
-    red = "#ff5a55",
-    orange = "#fea269",
-    yellow = "#fce97d",
-    chartreuse = "#d4ea87",
-    green = "#abeb91",
-    spring = "#6edfb2",
-    cyan = "#31d3d3",
-    azure = "#5acae9",
-    blue = "#82c1ff",
-    violet = "#9b8bfb",
-    magenta = "#b354f7",
-    rose = "#d957a6",
-  },
-  bright = {
-    black = "#4c555e",
-    white = "#ffffff",
-    red = "#ff9794",
-    orange = "#ffcba5",
-    yellow = "#ffffb5",
-    chartreuse = "#e4f3ba",
-    green = "#c9e6be",
-    spring = "#b9e9d5",
-    cyan = "#a9ebeb",
-    azure = "#b2e4f5",
-    blue = "#baddff",
-    violet = "#dbc2f1",
-    magenta = "#fca7e3",
-    rose = "#fe9fbc",
-  }
 }
 
 
@@ -263,8 +333,8 @@ h("@interface", {link = "@type.interface"})
 
 h("@attribute", {fg = accent.viridian})
 h("@attribute.builtin", {fg = accent.viridian})
--- "@preproc"
--- "@define"
+h("@preproc", {fg = palette.celestial})
+h("@define", {})
 h("@macro", {})
 
 h("@comment", {fg = gray[5], italic = true})
@@ -404,6 +474,8 @@ h("@lsp.typemod.comparison.injected", {link = "@operator"})
 
 h("@lsp.type.unresolvedReference", {undercurl = true, sp = palette.gray})
 
+-- h("@lsp.type.decorator.python", {})
+
 
 h("LineNr", {fg = gray[4]})
 h("NonText", {fg = gray[4]})
@@ -455,8 +527,8 @@ h("Title", {fg = palette.cerise, bold = true})
 
 h("DiagnosticError", {fg = terminal.normal.red})
 h("DiagnosticWarn", {fg = terminal.normal.yellow})
-h("DiagnosticInfo", {fg = terminal.normal.cyan})
-h("DiagnosticHint", {fg = terminal.bright.cyan})
+h("DiagnosticInfo", {fg = terminal.normal.green})
+h("DiagnosticHint", {fg = terminal.normal.cyan})
 h("DiagnosticOk", {fg = terminal.normal.green})
 h("DiagnosticUnnecessary", {})
 
