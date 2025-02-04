@@ -43,7 +43,7 @@ vim.opt.signcolumn = "no"
 -- Remember cursor position from last session
 vim.api.nvim_create_augroup("remember_cursor_position", { clear = true })
 vim.api.nvim_create_autocmd({"BufReadPost"}, {
-  pattern = {"*.rs", "*.py", "*.lua", "*.scm", "*.html", "*.css", "*.js", "*.pdf"},
+  pattern = {"*.rs", "*.py", "*.lua", "*.scm", "*.html", "*.css", "*.js", "*.pdf", "*.md", "*.yaml"},
   group = "remember_cursor_position",
   callback = function()
     vim.cmd [[ if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]]
@@ -78,6 +78,9 @@ vim.opt.scroll = 10
 
 -- Scroll horizontally by 8 columns at a time
 vim.opt.sidescroll = 8
+
+-- Allow scrolling by one line at a time with soft line wraps
+vim.opt.smoothscroll = true
 
 -- Use ? for :nohl instead of reverse search
 vim.keymap.set({"n", "v"}, "?", function()

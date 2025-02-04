@@ -16,18 +16,52 @@ setlocal shiftwidth=0
 setlocal softtabstop=-1
 
 setlocal concealcursor=n
-setlocal conceallevel=2
+setlocal conceallevel=0
 
 setlocal spell
 setlocal spellcapcheck=
 
-noremap <buffer> <silent> k gk
-noremap <buffer> <silent> j gj
+" scrolloff doesn't work with gj/gk smoothscroll trick below
+setlocal scrolloff=0
+
+lua <<EOF
+-- using lua's keymapping bc vim's breaks Visual mode
+vim.keymap.set("n", "k", function()
+    vim.fn.MoveCursorUp()
+end)
+vim.keymap.set("n", "j", function()
+    vim.fn.MoveCursorDown()
+end)
+EOF
+
+"noremap <buffer> <silent> k :call MoveCursorUp()<Enter>
+"noremap <buffer> <silent> j :call MoveCursorDown()<Enter>
 noremap <buffer> <silent> 0 g0
 noremap <buffer> <silent> ^ g^
 noremap <buffer> <silent> $ g$
 noremap <buffer> <silent> I g^i
 nnoremap <buffer> <silent> A :call MarkdownCapitalA()<Escape>a
+
+function MoveCursorUp()
+    let l:screenlinenum = screenrow()
+    let l:scrolloff = 10
+    if l:screenlinenum + 1 <= l:scrolloff
+        call win_execute(win_getid(winnr()), "normal \<C-y>")
+    endif
+    normal gk
+endfunction
+
+function MoveCursorDown()
+    let l:screenlinenum = screenrow()
+    let l:winheight = winheight(0)
+    let l:scrolloff = 10
+    if l:screenlinenum >= l:winheight - l:scrolloff
+        if line('.') < line('$')
+            call win_execute(win_getid(winnr()), "normal \<C-e>")
+        endif
+    endif
+    normal gj
+endfunction
 
 function MarkdownCapitalA()
     normal g$

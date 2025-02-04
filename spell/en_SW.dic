@@ -1,11 +1,19 @@
 0
 
+liminal
+reprieval
+exclave/SM
+attritable
+ideation/S
+pinniped/SM
+recency
+
 WD-40
 nvim
 vimrc
 
 ok
-todo
+todo/S
 arg/SM
 eval/SM
 config/SM
@@ -13,16 +21,22 @@ async/SM
 mutex/SM
 struct/SM
 
+schema/SM
+
 quaternion/SM
 
 segfault/SMDG
 
-preprocess/DG
+preprocess/SDG
 preprocessor/SM
 
 coroutine/SM
 
 namespace/SM
+
+cryptographic
+decrypt/DGS
+decryption
 
 respawn/SMDG
 
@@ -140,5 +154,4 @@ Palantir
 
 viridian
 celadon
-
 

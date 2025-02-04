@@ -145,6 +145,7 @@ local palette = {
 
   ice =           "#C6EBF5",
   black_ice =     "#869BA5",
+  hail =          "#E8F8FC",
 
   bright_white =  "#FFFFFF",
 
@@ -271,7 +272,7 @@ local gray = {
 
 
 
-h("Normal", {fg = foreground, bg = background})
+h("Normal", {fg = terminal.primary.foreground, bg = terminal.primary.background})
 h("Visual", {bg = gray[4]})
 h("SpellBad", {sp = terminal.bright.red, undercurl = true})
 h("SpellCap", {sp = terminal.bright.yellow, undercurl = true})
@@ -299,9 +300,9 @@ h("@constant.parameter", {fg = palette.periwinkle, italic = true})
 
 -- Variable Identifiers
 h("@variable", {fg = foreground})
-h("@variable.builtin", {fg = foreground, bold = true})
 h("@variable.parameter", {fg = foreground, italic = true})
 h("@variable.member", {fg = palette.ice})
+h("@variable.builtin", {fg = foreground, bold = true})
 
 h("@property", {fg = palette.robin_egg})
 
@@ -450,7 +451,7 @@ h("@lsp.type.interface", {link = "@type.interface"})
 h("@lsp.type.namespace", {link = "@module"})
 h("@lsp.type.variable", {link = "@variable"})
 h("@lsp.type.parameter", {link = "@variable.parameter"})
-h("@lsp.type.property", {link = "@variable.member"})
+h("@lsp.type.property", {link = "@property"})
 
 h("@lsp.type.string", {link = "@string"})
 h("@lsp.type.character", {link = "@character"})
@@ -464,6 +465,9 @@ h("@lsp.type.punctuation", {link = "@punctuation"})
 h("@lsp.mod.documentation", {link = "@comment.documentation"})
 h("@lsp.mod.attribute", {link = "@lsp"})
 
+h("@lsp.type.const", {link = "@constant"})
+h("@lsp.type.static", {link = "@constant"})
+
 h("@lsp.typemod.variable.static", {link = "@constant"})
 h("@lsp.typemod.keyword.crateRoot", {link = "@module.builtin"})
 
@@ -474,7 +478,10 @@ h("@lsp.typemod.comparison.injected", {link = "@operator"})
 
 h("@lsp.type.unresolvedReference", {undercurl = true, sp = palette.gray})
 
--- h("@lsp.type.decorator.python", {})
+h("@lsp.typemod.variable.readonly.python", {link = "@constant"})
+h("@lsp.typemod.class.builtin.python", {link = "@type.builtin"})
+
+h("@lsp.type.property.rust", {link = "@variable.member"})
 
 
 h("LineNr", {fg = gray[4]})
@@ -498,8 +505,8 @@ h("Pmenu", {bg = terminal.bright.black})
 h("PmenuSel", {bg = terminal.dim.white})
 h("PmenuSbar", {bg = terminal.dim.white})
 h("PmenuThumb", {bg = terminal.bright.white})
-h("StatusLine", {fg = background, bg = foreground, bold = true})
-h("StatusLineNC", {fg = background, bg = dim_foreground})
+h("StatusLine", {fg = terminal.primary.background, bg = terminal.primary.foreground, bold = true})
+h("StatusLineNC", {fg = terminal.primary.background, bg = terminal.primary.dim_foreground})
 h("WinSeparator", {link = "Normal"})
 
 h("FloatBorder", {fg = terminal.bright.black})
@@ -554,8 +561,8 @@ h("@markup.link", {fg = palette.pistachio, underline = true})
 h("@markup.link.url", {fg = palette.sky, underline = true})
 h("@markup.link.label", {fg = palette.pistachio})
 
-h("@markup.raw", {fg = palette.powder_blue})
-h("@markup.raw.block", {fg = palette.powder_blue})
+h("@markup.raw", {fg = palette.amaranth})
+h("@markup.raw.block", {fg = palette.amaranth})
 
 h("@markup.quote", {fg = foreground})
 h("@markup.math", {fg = foreground})
@@ -577,8 +584,8 @@ h("@diff.delta", {fg = terminal.bright.blue})
 
 h("DiffAdd", {fg = terminal.normal.green, bg = gray[2]})
 h("DiffDelete", {fg = terminal.normal.red})
-h("DiffChange", {})
-h("DiffText", {fg = terminal.bright.blue, bg = gray[2]})
+h("DiffChange", {bg = gray[2]})
+h("DiffText", {fg = terminal.normal.yellow, bg = gray[2]})
 
 h("diffAdded", {fg = terminal.normal.green})
 h("diffRemoved", {fg = terminal.normal.red})
@@ -616,6 +623,9 @@ h("fish_color_operator", {fg = terminal.bright.cyan})
 h("fish_color_redirection", {fg = terminal.bright.blue})
 h("fish_color_end", {fg = terminal.dim.cyan})
 h("fish_color_comment", {fg = terminal.bright.black, italic = true})
+
+
+h("yamlMappingKey", {link = "@property"})
 
 
 h("healthError", {fg = terminal.normal.red})

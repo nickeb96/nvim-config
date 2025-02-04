@@ -63,12 +63,27 @@ cmp.setup {
   },
 }
 
+local rust_analyzer_cmd = { "rust-analyzer" }
+if vim.fn.executable("ra-multiplex") == 1 then
+  local job = vim.system({"ra-multiplex", "status"})
+  local status = job:wait()
+  if status.code == 0 then
+    rust_analyzer_cmd = vim.lsp.rpc.connect("/Users/Nick/.local/state/ra-multiplex.sock")
+  end
+end
+
 local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 lspconfig.rust_analyzer.setup({
   capabilities = default_capabilities,
+  cmd = rust_analyzer_cmd,
   settings = {
     ["rust-analyzer"] = {
+      lspMux = {
+        version = "1",
+        method = "connect",
+        server = "rust-analyzer",
+      },
       imports = {
         granularity = {
           group = "module",
@@ -93,16 +108,17 @@ lspconfig.basedpyright.setup({
   capabilities = default_capabilities,
   settings = {
     basedpyright = {
+      typeCheckingMode = "standard",
       analysis = {
         diagnosticSeverityOverrides = {
           reportMissingTypeStubs = false,
           reportAny = false,
           reportUnusedCallResult = false,
+          reportUnusedParameter = false,
+          reportUnusedVariable = false,
           reportUnusedImport = false,
-          reportInconsistentOverload = false,
           reportMissingTypeArgument = false,
           reportMissingParameterType = false,
-          reportUnusedParameter = false,
           reportUnknownArgumentType = false,
           reportUnknownLambdaType = false,
           reportUnknownMemberType = false,
@@ -110,6 +126,7 @@ lspconfig.basedpyright.setup({
           reportUnknownVariableType = false,
           reportDeprecated = false,
           reportImplicitOverride = false,
+          reportInconsistentOverload = false,
         }
       }
     }
@@ -124,33 +141,28 @@ lspconfig.ts_ls.setup({
 lspconfig.cssls.setup({
   capabilities = default_capabilities,
 })
+lspconfig.html.setup({
+  capabilities = default_capabilities,
+})
+lspconfig.taplo.setup({
+  capabilities = default_capabilities,
+})
 lspconfig.clangd.setup({
   capabilities = default_capabilities,
 })
-lspconfig.harper_ls.setup({
+lspconfig.dockerls.setup({
   capabilities = default_capabilities,
-  settings = {
-    ["harper-ls"] = {
-      linters = {
-        spell_check = false,
-        spelled_numbers = false,
-        an_a = true,
-        sentence_capitalization = false,
-        unclosed_quotes = true,
-        wrong_quotes = false,
-        long_sentences = true,
-        repeated_words = true,
-        spaces = false,
-        matcher = true,
-        correct_number_suffix = true,
-        number_suffix_capitalization = true,
-        multiple_sequential_pronouns = true,
-        linking_verbs = false,
-        avoid_curses = true,
-      }
-    }
-  }
 })
+lspconfig.helm_ls.setup {
+  capabilities = default_capabilities,
+  -- settings = {
+  --   ['helm-ls'] = {
+  --     yamlls = {
+  --       path = "yaml-language-server",
+  --     }
+  --   }
+  -- }
+}
 
 
 vim.diagnostic.config {

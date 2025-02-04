@@ -1,1 +1,1 @@
-html.vim
+htmldjango.vim

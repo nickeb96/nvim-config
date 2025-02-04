@@ -24,6 +24,9 @@ Plug 'DingDean/wgsl.vim'
 " ledger support
 Plug 'ledger/vim-ledger'
 
+" helm charts
+Plug 'towolf/vim-helm'
+
 " swift syntax highlighting
 Plug 'keith/swift.vim'
 
@@ -33,9 +36,6 @@ Plug 'tikhomirov/vim-glsl'
 " adds ys cs ds operators to insert, change, and delete surroundings
 Plug 'tpope/vim-surround'
 
-" adds gc operator for commenting
-" Plug 'tpope/vim-commentary'
-
 " adds cr operator for coercing between snake_cases, PascalCase, etc.
 Plug 'tpope/vim-abolish'
 
@@ -44,7 +44,6 @@ Plug 'tpope/vim-repeat'
 
 " sonokai color scheme
 Plug 'sainnhe/sonokai'
-" let g:sonokai_colors_override = { 'bg0': ['#12171d', '234'] }
 let g:sonokai_colors_override = { 'bg0': ['#141414', '234'] }
 
 " nordic color scheme
@@ -84,23 +83,6 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lua'
 
-" snippets
-" Plug 'L3MON4D3/LuaSnip'
-
-" lsp zero
-" Plug 'VonHeikemen/lsp-zero.nvim', { 'branch': 'v1.x' }
-
 " inline hexcolor display
 Plug 'norcalli/nvim-colorizer.lua'
-
-" fuzzy finder
- "Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope-fzy-native.nvim'
-" Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
-
-" romaji to hirigana
-Plug 'vim-skk/eskk.vim'
-
-" quicklist for todo
-Plug 'folke/todo-comments.nvim'
 
