@@ -197,18 +197,29 @@ local accent = {
   viridian =      "#478978",
   viridian2 =     "#619084",
   prussian =      "#2D5882",
+  prussian2 =     "#3C6B99",
+  prussian3 =     "#4574A3",
   kagi_link =     "#8AB4F8",
   inset_bg_soft = "#0e1319",
   inset_bg =      "#0c1016",
 }
 
-local heading_shades = {
+local old_heading_shades = {
   "#FF8C57",
   "#FDA075",
   "#FAB392",
   "#F8C7B0",
   "#F8C7B0",
   "#F8C7B0",
+}
+
+local heading_shades = {
+  palette.tangerine,
+  "#F79669",
+  "#EFA07B",
+  "#E7AA8D",
+  "#E1B29A",
+  "#DBB9A8",
 }
 
 
@@ -279,26 +290,47 @@ h("SpellCap", {sp = terminal.bright.yellow, undercurl = true})
 h("SpellRare", {sp = terminal.bright.magenta, undercurl = true})
 h("SpellLocal", {sp = terminal.bright.magenta, undercurl = true})
 
+
 -- Literals
+
 h("@boolean", {fg = palette.mauve})
+h("@number", {fg = palette.mauve})
+h("@number.float", {fg = palette.mauve})
+
 h("@character", {link = "@string"})
 h("@character.special", {link = "@string.special"})
+
 h("@string", {fg = palette.fawn})
 h("@string.escape", {fg = palette.sunset, bold = true})
 h("@string.special", {fg = palette.orange_peel})
 h("@string.special.symbol", {fg = palette.orange_peel})
 h("@string.special.path", {underline = true})
 h("@string.special.url", {underline = true})
-h("@number", {fg = palette.mauve})
-h("@number.float", {fg = palette.mauve})
+
+
+-- Regex
+
+h("@string.regexp", {fg = palette.jasper})
+h("@string.escape.regex", {fg = palette.cerise})
+h("@variable.builtin.regex", {fg = palette.cerise, bold = true})
+h("@punctuation.bracket.regex", {fg = palette.powder_blue})
+h("@punctuation.delimiter.regex", {fg = palette.powder_blue})
+h("@constant.regex", {fg = palette.cerise})
+h("@operator.regex", {fg = palette.tangerine, bold = true})
+h("@number.regex", {fg = palette.rose})
+h("@property.regex", {fg = palette.robin_egg})
+
 
 -- Constant Identifiers
+
 h("@constant", {fg = palette.periwinkle})
 h("@constant.builtin", {fg = palette.mauve})
-h("@constant.macro", {fg = palette.beaver, italic = true})
+h("@constant.macro", {fg = palette.beaver})
 h("@constant.parameter", {fg = palette.periwinkle, italic = true})
 
+
 -- Variable Identifiers
+
 h("@variable", {fg = foreground})
 h("@variable.parameter", {fg = foreground, italic = true})
 h("@variable.member", {fg = palette.ice})
@@ -309,7 +341,9 @@ h("@property", {fg = palette.robin_egg})
 h("@module", {fg = palette.sky})
 h("@module.builtin", {fg = palette.sky, bold = true})
 
+
 -- Callable Identifiers
+
 h("@function", {fg = palette.sky})
 h("@function.call", {link = "@function"})
 h("@function.builtin", {fg = palette.sky, italic = true})
@@ -318,7 +352,9 @@ h("@function.method", {fg = palette.sky})
 h("@function.method.call", {link = "@function.method"})
 h("@constructor", {fg = palette.vista})
 
+
 -- Type Identifiers
+
 h("@type", {fg = palette.pistachio})
 h("@type.builtin", {fg = palette.turquoise})
 h("@type.qualifier", {fg = palette.coral})
@@ -334,11 +370,8 @@ h("@interface", {link = "@type.interface"})
 
 h("@attribute", {fg = accent.viridian})
 h("@attribute.builtin", {fg = accent.viridian})
-h("@preproc", {fg = palette.celestial})
-h("@define", {})
-h("@macro", {})
 
-h("@comment", {fg = gray[5], italic = true})
+h("@comment", {fg = gray[6], italic = true})
 h("@comment.documentation", {fg = gray[9], nocombine = true})
 h("@comment.error", {fg = terminal.dim.red})
 h("@comment.warning", {fg = terminal.dim.yellow})
@@ -349,10 +382,12 @@ h("@storageclass", {link = "@type.qualifier"})
 h("@storageclass.lifetime", {fg = palette.orange_peel, italic = true})
 
 h("@punctuation", {fg = palette.gray})
--- "@punctuation.bracket"
--- "@punctuation.delimiter"
--- "@punctuation.special"
+h("@punctuation.bracket", {link = "@punctuation"})
+h("@punctuation.delimiter", {link = "@punctuation"})
+h("@punctuation.special", {link = "@punctuation"})
 
+
+-- Keywords
 
 h("@keyword", {fg = palette.vista})
 h("@keyword.coroutine", {link = "@keyword"})
@@ -367,23 +402,35 @@ h("@keyword.debug", {link = "@keyword"})
 h("@keyword.exception", {link = "@keyword"})
 h("@keyword.conditional", {link = "@keyword"})
 h("@keyword.conditional.ternary", {link = "@keyword"})
-h("@keyword.directive", {link = "@keyword"})
-h("@keyword.directive.definition", {link = "@keyword"})
 
+
+-- Preprocessor Directives
+
+h("@keyword.directive", {fg = accent.prussian2, italic = true})
+h("@keyword.directive.define", {link = "@keyword.directive"})
+
+h("@keyword.directive.c", {fg = accent.prussian2, italic = true, bold = true})
+h("@keyword.directive.define.c", {link = "@keyword.directive.c"})
+h("@keyword.import.c", {link = "@keyword.directive.c"})
+
+
+-- Other
 
 h("@label", {fg = palette.jasper})
 
 h("@operator", {fg = palette.powder_blue})
+
+
+-- HTML/XML
 
 h("@tag", {fg = palette.jasper})
 h("@tag.builtin", {fg = palette.jasper, bold = true})
 h("@tag.attribute", {fg = palette.tangerine})
 h("@tag.delimiter", {fg = palette.powder_blue})
 
--- highlight("@debug", {fg = bright.magenta})
 
 
--- Default vim groups linked to treesitter groups
+-- Default Vim Groups Linked to Treesitter Groups
 
 h("Comment", {link = "@comment"})
 
@@ -397,7 +444,7 @@ h("Float", {link = "@number.float"})
 h("Identifier", {link = "@variable"})
 h("Function", {link = "@function"})
 
-h("Statement", {link = "keyword"})
+h("Statement", {link = "@keyword"})
 h("Keyword", {link = "@keyword"})
 h("Conditional", {link = "@keyword.conditional"})
 h("Repeat", {link = "@keyword.repeat"})
@@ -405,7 +452,7 @@ h("Exception", {link = "@keyword.exception"})
 h("Label", {link = "@label"})
 h("Operator", {link = "@operator"})
 
-h("PreProc", {link = "@preproc"})
+h("PreProc", {link = "@keyword.directive"})
 h("Include", {link = "PreProc"})
 h("Define", {link = "PreProc"})
 h("Macro", {link = "PreProc"})
@@ -421,7 +468,7 @@ h("SpecialChar", {link = "@character.special"})
 h("Tag", {link = "Special"})
 h("Delimiter", {link = "@punctuation.delimiter"})
 h("SpecialComment", {link = "@comment.documentation"})
-h("Debug", {link = "@debug"})
+-- h("Debug", {link = "@debug"})
 h("SpecialKey", {fg = accent.prussian})
 
 -- -- -- --
@@ -482,6 +529,8 @@ h("@lsp.typemod.variable.readonly.python", {link = "@constant"})
 h("@lsp.typemod.class.builtin.python", {link = "@type.builtin"})
 
 h("@lsp.type.property.rust", {link = "@variable.member"})
+
+h("@lsp.type.macro.c", {link = "@constant.macro"})
 
 
 h("LineNr", {fg = gray[4]})
@@ -557,9 +606,9 @@ h("@markup.strong", {link = "@markup.bold"})
 h("@markup.strikethrough", {strikethrough = true})
 h("@markup.underline", {underline = true})
 
-h("@markup.link", {fg = palette.pistachio, underline = true})
-h("@markup.link.url", {fg = palette.sky, underline = true})
-h("@markup.link.label", {fg = palette.pistachio})
+h("@markup.link", {fg = palette.mindaro})
+h("@markup.link.label", {fg = palette.mindaro})
+h("@markup.link.url", {fg = palette.blush, underline = true})
 
 h("@markup.raw", {fg = palette.amaranth})
 h("@markup.raw.block", {fg = palette.amaranth})
@@ -644,6 +693,4 @@ h("TSCurrentScope", {bg = accent.inset_bg})
 -- "@string.documentation" --   string documenting code (e.g. Python docstrings)
 -- "@string.regexp" --          regular expressions
 
-
--- "@markup.environment" --     environments (e.g. in LaTeX)
 

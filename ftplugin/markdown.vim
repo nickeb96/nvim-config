@@ -26,12 +26,8 @@ setlocal scrolloff=0
 
 lua <<EOF
 -- using lua's keymapping bc vim's breaks Visual mode
-vim.keymap.set("n", "k", function()
-    vim.fn.MoveCursorUp()
-end)
-vim.keymap.set("n", "j", function()
-    vim.fn.MoveCursorDown()
-end)
+vim.keymap.set("n", "k", vim.fn.MoveCursorUp, { buffer = true })
+vim.keymap.set("n", "j", vim.fn.MoveCursorDown, { buffer = true })
 EOF
 
 "noremap <buffer> <silent> k :call MoveCursorUp()<Enter>

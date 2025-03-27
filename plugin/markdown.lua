@@ -52,7 +52,6 @@ blockquote {
   border-radius: 8px;
   padding: 8px;
   background-color: #2b2d2f;
-  
 }
 blockquote>* {
   margin: 0px;
@@ -91,40 +90,7 @@ local function convert_buffer()
 end
 
 
-local function make_a_server()
-  local server = vim.uv.new_tcp()
-  server:bind("127.0.0.1", PORT)
-  server:listen(128, function (error)
-    local client = vim.uv.new_tcp()
-    server:accept(client)
-    client:read_start(vim.schedule_wrap(function (error, chunk)
-      if error then
-        return
-      end
-      _markdown_server_handle_request(client, chunk)
-    end))
-  end)
-end
-
-
-function _markdown_server_handle_request(client, raw_request)
-  local request = _markdown_server_parse_request(raw_request)
-  if request.method == "GET" and request.path == "/" then
-    _markdown_server_respond(client, {
-      code = 200,
-      message = "OK",
-      body = convert_buffer(),
-    })
-  else
-    _markdown_server_respond(client, {
-      code = 404,
-      message = "Not Found",
-    })
-  end
-end
-
-
-function _markdown_server_respond(client, response)
+local function server_respond(client, response)
   local lines = {
     string.format("HTTP/1.1 %d %s", response.code, response.message),
     "Accept: text/html",
@@ -144,7 +110,7 @@ function _markdown_server_respond(client, response)
 end
 
 
-function _markdown_server_parse_request(request)
+local function server_parse_request(request)
   local lines = {}
   local line_start = 1
   local start_of_body = nil
@@ -184,15 +150,36 @@ function _markdown_server_parse_request(request)
 end
 
 
-local function build_response(body)
-  local response = {
-    "HTTP/1.1 200 OK",
-    "Accept: text/html",
-    "Accept-Encoding: identity",
-    "Content-Type: text/html",
-    "Content-Length: "..#body,
-  }
-  return table.concat(response, "\r\n").."\r\n\r\n"..body
+local function server_handle_request(client, raw_request)
+  local request = server_parse_request(raw_request)
+  if request.method == "GET" and request.path == "/" then
+    server_respond(client, {
+      code = 200,
+      message = "OK",
+      body = convert_buffer(),
+    })
+  else
+    server_respond(client, {
+      code = 404,
+      message = "Not Found",
+    })
+  end
+end
+
+
+local function make_a_server()
+  local server = vim.uv.new_tcp()
+  server:bind("127.0.0.1", PORT)
+  server:listen(128, function(bind_error)
+    local client = vim.uv.new_tcp()
+    server:accept(client)
+    client:read_start(vim.schedule_wrap(function(read_error, chunk)
+      if read_error then
+        return
+      end
+      server_handle_request(client, chunk)
+    end))
+  end)
 end
 
 

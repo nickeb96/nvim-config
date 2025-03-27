@@ -86,3 +86,7 @@ Plug 'hrsh7th/cmp-nvim-lua'
 " inline hexcolor display
 Plug 'norcalli/nvim-colorizer.lua'
 
+" japanese language input
+"Plug 'vim-skk/skkeleton'
+"Plug 'vim-denops/denops.vim'
+

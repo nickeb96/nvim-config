@@ -32,6 +32,8 @@ preprocessor/SM
 
 coroutine/SM
 
+hashmap/SM
+
 namespace/SM
 
 cryptographic

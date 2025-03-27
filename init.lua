@@ -171,6 +171,9 @@ vim.g.netrw_banner = 0
 vim.g.netrw_sort_by = "name"
 vim.g.netrw_sort_sequence = ""
 
+-- Diff Mode options
+vim.opt.diffopt = {"filler", "internal", "algorithm:histogram", "linematch:60"}
+
 -- List mode symbols
 vim.opt.listchars = {
   eol = "\u{21B5}",
@@ -186,6 +189,9 @@ vim.opt.listchars = {
 -- Fix line endings
 vim.opt.fileformats = {"unix", "dos"}
 vim.opt.fileformat = "unix"
+
+-- Recognize euc-jp file encoding
+vim.opt.fileencodings = {"ucs-bom", "utf-8", "euc-jp", "default", "latin1"}
 
 -- Disable nroff directives for paragraph motions
 vim.opt.paragraphs = ""
@@ -218,6 +224,15 @@ vim.opt.shiftround = true
 
 vim.cmd.colorscheme "phoenix"
 
+-- vim.cmd [[
+-- imap <C-j> <Plug>(skkeleton-enable)
+-- call skkeleton#config({
+--   \ 'keepState': v:true,
+--   \ 'keepMode': v:true,
+--   \ 'globalDictionaries': ['/Users/Nick/SKK-JISYO.L'],
+--   \ 'eggLikeNewline': v:true
+--   \ })
+-- ]]
 
 if vim.g.neovide then
   vim.opt.guifont = "SauceCodePro Nerd Font:h16"

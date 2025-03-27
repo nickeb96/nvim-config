@@ -61,6 +61,7 @@
 (visibility_modifier
   "in" @keyword.modifier)
 
+
 ;;;; Modules
 
 (mod_item
@@ -278,12 +279,9 @@
 
 ;;;; Type Parameters and Generics
 
-(type_parameters (type_identifier) @type.parameter)
+(type_parameter name: (type_identifier) @type.parameter)
 
 (where_clause "where" @keyword)
-
-(constrained_type_parameter
-  left: (type_identifier) @type.parameter)
 
 ; handles:
 ;   impl Trait
@@ -480,6 +478,8 @@
   ["(" ")"] @punctuation.bracket)
 (tuple_pattern
   "," @punctuation.delimiter)
+(tuple_pattern
+  (identifier) @variable)
 
 (tuple_struct_pattern
   type: [(identifier) @type.struct
@@ -489,6 +489,9 @@
   ["(" ")"] @punctuation.bracket)
 (tuple_struct_pattern
   "," @punctuation.delimiter)
+(tuple_struct_pattern
+  type: (_)
+  (identifier) @variable)
 
 (struct_pattern
   type: [(type_identifier) @type.struct
@@ -506,8 +509,11 @@
   ["[" "]"] @punctuation.bracket)
 (slice_pattern
   "," @punctuation.delimiter)
+(slice_pattern
+  (identifier) @variable)
 
 (captured_pattern
+  (identifier) @variable
   "@" @punctuation.delimiter)
 
 (or_pattern
@@ -521,11 +527,14 @@
 
 (match_pattern
   "if" @conditional)
+(match_pattern
+  (identifier) @variable)
 
-(negative_literal "-" @number (integer_literal))
-(negative_literal "-" @number.float (float_literal))
+(for_expression
+  pattern: (identifier) @variable)
 
-; Function calls
+
+;;;; Function calls
 
 (call_expression
   function: (identifier) @function.call)
@@ -625,6 +634,8 @@
 (boolean_literal) @boolean
 (integer_literal) @number
 (float_literal) @number.float
+(negative_literal "-" @number (integer_literal))
+(negative_literal "-" @number.float (float_literal))
 (raw_string_literal) @string
 (string_literal) @string
 (escape_sequence) @string.escape
@@ -645,8 +656,6 @@
 
 
 
-
-
 ;;;; Attributes
 
 (inner_attribute_item ["#" "!" "[" "]"] @attribute.delimiter)
@@ -657,7 +666,4 @@
 (attribute
   arguments: (token_tree ["(" "," ")" "=" "[" "]"] @attribute.delimiter))
 
-
-; TODO:
-;  as: <x as y> and 7i16 as i32
 
